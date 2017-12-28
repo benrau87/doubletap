@@ -164,6 +164,7 @@ def ssl(ip_address, port, url_start):
     print bcolors.OKGREEN + "INFO: CHECK FILE - Finished with SSL-scan for " + ip_address + bcolors.ENDC
     print results_ssl
     write_to_file(ip_address, "ssl-scan", results_ssl)
+    return
 
 def httpEnum(ip_address, port):
     print bcolors.HEADER + "INFO: Detected http on " + ip_address + ":" + port + bcolors.ENDC
@@ -254,7 +255,7 @@ def ftpEnum(ip_address, port):
 
 def udpScan(ip_address):
     print bcolors.HEADER + "INFO: Detected UDP on " + ip_address + bcolors.ENDC
-    UDPSCAN = "nmap -vv -Pn -A -sC -sU -T 4 --top-ports 200 -oN %s%s/port_scans/udp_%s.nmap' %s"  % (dirs, ip_address, ip_address, ip_address)
+    UDPSCAN = "nmap -vv -Pn -A -sC -sU -T 4 --top-ports 200 -oN %s%s/port_scans/udp_%s.nmap %s"  % (dirs, ip_address, ip_address, ip_address)
     print bcolors.HEADER + UDPSCAN + bcolors.ENDC
     udpscan_results = subprocess.check_output(UDPSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with UDP-Nmap scan for " + ip_address + bcolors.ENDC
@@ -262,6 +263,7 @@ def udpScan(ip_address):
     UNICORNSCAN = "unicornscan -mU -v -I %s > %s%s/port_scans/unicorn_udp_%s.txt" % (ip_address, dirs, ip_address, ip_address)
     unicornscan_results = subprocess.check_output(UNICORNSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: CHECK FILE - Finished with UNICORN-scan for " + ip_address + bcolors.ENDC
+    return
 
 def nfsEnum(ip_address, port):
     print bcolors.HEADER + "INFO: Detected NFS on " + ip_address + bcolors.ENDC
@@ -271,20 +273,23 @@ def nfsEnum(ip_address, port):
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with NFS-scan for " + ip_address + bcolors.ENDC
     print nfsscan_results
     write_to_file(ip_address, "nfsscan", nfsscan_results)
+    return
 
 def sshScan(ip_address, port):
     print bcolors.HEADER + "INFO: Detected SSH on " + ip_address + ":" + port  + bcolors.ENDC
     connect_to_port(ip_address, port, "ssh")
     ssl_process = multiprocessing.Process(target=sshBrute, args=(ip_address,port))
     ssl_process.start()
+    return
 
 def sshBrute(ip_address, port):    
     print bcolors.HEADER + "INFO: SSH Bruteforce on " + ip_address + ":" + port  + bcolors.ENDC
-    SSHSCAN = "hydra -I -t 4 -L '/opt/doubletap-git/Wordlists/quick_hit.txt -P /opt/doubletap-git/Wordlists/quick_hit.txt ssh://%s -s %s | grep target" % (ip_address, port)
+    SSHSCAN = "hydra -I -t 4 -L '/opt/doubletap-git/wordlists/quick_hit.txt -P /opt/doubletap-git/wordlists/quick_hit.txt ssh://%s -s %s | grep target" % (ip_address, port)
     results_ssh = subprocess.check_output(SSHSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with SSH-Bruteforce check for " + ip_address + bcolors.ENDC
     print results_ssh
     write_to_file(ip_address, "sshscan", results_ssh)
+    return
 
 def pop3Scan(ip_address, port):
     print bcolors.HEADER + "INFO: Detected POP3 on " + ip_address + ":" + port  + bcolors.ENDC
@@ -383,19 +388,6 @@ def nmapScan(ip_address):
                 port = port.split("/")[0]
                 multProc(sshScan, ip_address, port)
    
-#RDP 
-
-      #  elif:
-       #     multProc(vulnEnum, ip_address, 80)
-        #elif "snmp" in serv:
-        #    for port in ports:
-        #        port = port.split("/")[0]
-        #        multProc(snmpEnum, ip_address, port)
-  #     elif ("domain" in serv):
-    #  for port in ports:
-     #    port = port.split("/")[0]
-     #    multProc(dnsEnum, ip_address, port)
-
     return
 
 
