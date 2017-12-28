@@ -397,8 +397,8 @@ print "!!!!                     DOUBLETAP                     !!!!!"
 print "!!!!                A script kiddies delite            !!!!!"
 print "!!!!  An all in one recon and target template creator  !!!!!"
 print "!!!!            Automagically runs the following       !!!!!"
-print "!!!!        dirb, nikto, ftp, ssh, mssql, pop3, tcp    !!!!!"
-print "!!!!                    udp, smtp, smb                 !!!!!"
+print "!!!!     gobuster, nikto, ftp, ssh, mssql, pop3, tcp   !!!!!"
+print "!!!!           udp, smtp, smb, wig, hydra              !!!!!"
 print "------------------------------------------------------------"
 
 
