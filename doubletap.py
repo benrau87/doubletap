@@ -278,8 +278,8 @@ def nfsEnum(ip_address, port):
 def sshScan(ip_address, port):
     print bcolors.HEADER + "INFO: Detected SSH on " + ip_address + ":" + port  + bcolors.ENDC
     connect_to_port(ip_address, port, "ssh")
-    ssl_process = multiprocessing.Process(target=sshBrute, args=(ip_address,port))
-    ssl_process.start()
+    ssh_process = multiprocessing.Process(target=sshBrute, args=(ip_address,port))
+    ssh_process.start()
     return
 
 def sshBrute(ip_address, port):    
