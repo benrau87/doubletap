@@ -122,6 +122,7 @@ chmod +x "${file}"
 
 git clone -q -b master https://github.com/vulnersCom/nmap-vulners /tmp/vulners
 cp /tmp/vulners/vulners.nse /user/share/nmap/scripts
+nmap --script-updatedb
 
 print_good Finished!
 
