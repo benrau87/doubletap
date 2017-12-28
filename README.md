@@ -1,4 +1,4 @@
-[![Downloads](https://img.shields.io/github/downloads/benrau87/doubletap/total.svg "Downloads")]
+![Downloads](https://img.shields.io/github/downloads/benrau87/doubletap/total.svg "Downloads")
 
 # Doubletap
 ### A very loud but fast recon scan and pentest template creator for use in CTF's/OSCP/Hackthebox...
