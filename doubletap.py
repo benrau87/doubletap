@@ -280,7 +280,7 @@ def sshScan(ip_address, port):
 
 def sshBrute(ip_address, port):    
     print bcolors.HEADER + "INFO: SSH Bruteforce on " + ip_address + ":" + port  + bcolors.ENDC
-    SSHSCAN = "hydra -I -t 4 -L '/opt/doubletap-git/Wordlists/quick_hit.txt' -P '/opt/doubletap-git/Wordlists/quick_hit.txt' ssh://%s -s %s | grep target" % (ip_address, port)
+    SSHSCAN = "hydra -I -t 4 -L '/opt/doubletap-git/Wordlists/quick_hit.txt -P /opt/doubletap-git/Wordlists/quick_hit.txt ssh://%s -s %s | grep target" % (ip_address, port)
     results_ssh = subprocess.check_output(SSHSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with SSH-Bruteforce check for " + ip_address + bcolors.ENDC
     print results_ssh
