@@ -92,10 +92,7 @@ cd /opt/doubletap-git/ && python doubletap.py "\$@"
 EOF
 chmod +x "${file}"
 
-apt -y -qq install git \
-  || echo -e ' '${RED}'[!] Issue with apt install'${RESET} 1>&2
-git clone -q -b master  https://github.com/behindthefirewalls/Parsero.git /opt/parsero-git/ \
-  || echo -e ' '${RED}'[!] Issue when git cloning'${RESET} 1>&2
+git clone -q -b master  https://github.com/behindthefirewalls/Parsero.git /opt/parsero-git/ 
 pushd /opt/parsero-git/ >/dev/null
 git pull -q
 popd >/dev/null
@@ -109,10 +106,7 @@ cd /opt/parsero-git/ && python3 parsero.py "\$@"
 EOF
 chmod +x "${file}"
 
-apt -y -qq install git \
-  || echo -e ' '${RED}'[!] Issue with apt install'${RESET} 1>&2
-git clone -q -b master https://github.com/jekyc/wig.git /opt/wig-git/ \
-  || echo -e ' '${RED}'[!] Issue when git cloning'${RESET} 1>&2
+git clone -q -b master https://github.com/jekyc/wig.git /opt/wig-git/ 
 pushd /opt/wig-git/ >/dev/null
 git pull -q
 popd >/dev/null
