@@ -302,7 +302,8 @@ def vulnEnum(ip_address):
 
 def nmapScan(ip_address):
     ip_address = ip_address.strip()
-
+    print "Current default output directory set as " + dirs
+    print "Host IP set as " + myip
     print bcolors.OKGREEN + "INFO: Running general TCP Unicorn scan for " + ip_address + bcolors.ENDC
     PORTSCAN = "unicornscan %s "  % (ip_address)
     print bcolors.HEADER + PORTSCAN + bcolors.ENDC
@@ -382,6 +383,18 @@ def nmapScan(ip_address):
                 port = port.split("/")[0]
                 multProc(sshScan, ip_address, port)
    
+#RDP 
+
+      #  elif:
+       #     multProc(vulnEnum, ip_address, 80)
+        #elif "snmp" in serv:
+        #    for port in ports:
+        #        port = port.split("/")[0]
+        #        multProc(snmpEnum, ip_address, port)
+  #     elif ("domain" in serv):
+    #  for port in ports:
+     #    port = port.split("/")[0]
+     #    multProc(dnsEnum, ip_address, port)
 
     return
 
@@ -402,6 +415,8 @@ if len(sys.argv) < 2:
     print ""
     print "Usage: python doubletap.py <ip> <ip> <ip>"
     print "Example: python doubletap.py 192.168.1.101 192.168.1.102"
+    print "Current default output directory set as " + dirs
+    print "Host IP set as " + myip
     print ""
     print "############################################################"
     pass
@@ -417,7 +432,7 @@ if __name__=='__main__':
 
     for scanip in targets:
         scanip = scanip.rstrip()
-        if not scanip in subprocess.check_output("ls " + dirs, shell=True):                 
+        if not scanip in subprocess.check_output("ls " + dirs, shell=True):                   
             print bcolors.HEADER + "INFO: No folder was found for " + scanip + ". Setting up folder." + bcolors.ENDC
             subprocess.check_output("mkdir " + dirs + scanip, shell=True)
             subprocess.check_output("mkdir " + dirs + scanip + "/exploits", shell=True)
@@ -434,8 +449,6 @@ if __name__=='__main__':
             subprocess.check_output("sed -i -e 's/INSERTIPADDRESS/" + scanip + "/g' " + dirs + scanip + "/mapping-linux.md", shell=True)
             subprocess.check_output("sed -i -e 's/MYIPADDRESS/" + myip + "/g' " + dirs + scanip + "/mapping-linux.md", shell=True)
            
-
-
 
         p = multiprocessing.Process(target=nmapScan, args=(scanip,))
         p.start()
