@@ -1,5 +1,5 @@
-#### doubletap
-# A very loud but fast recon scan and pentest template creator for use in CTF's/OSCP/Hackthebox...
+# doubletap
+### A very loud but fast recon scan and pentest template creator for use in CTF's/OSCP/Hackthebox...
 
 ```
 To install just run the setup.sh, alternatively you can run my forked version of 
