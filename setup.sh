@@ -79,6 +79,8 @@ print_notification Installing...
 
 dir_check /opt/doubletap-git
 cp -r $gitdir/* /opt/doubletap-git
+chmod +x $gitdir/doubletap.py
+
 pushd /opt/doubletap-git/ >/dev/null
 #--- Add to path
 mkdir -p /usr/local/bin/
