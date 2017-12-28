@@ -417,7 +417,7 @@ if __name__=='__main__':
 
     for scanip in targets:
         scanip = scanip.rstrip()
-        if not scanip in dirs:           
+        if not scanip in subprocess.check_output("ls " + dirs, shell=True):                 
             print bcolors.HEADER + "INFO: No folder was found for " + scanip + ". Setting up folder." + bcolors.ENDC
             subprocess.check_output("mkdir " + dirs + scanip, shell=True)
             subprocess.check_output("mkdir " + dirs + scanip + "/exploits", shell=True)
