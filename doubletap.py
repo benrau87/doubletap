@@ -11,16 +11,14 @@ import atexit
 import sys
 import socket
 
-##Change me if needed################
-
+##Change me if needed
 
 myip = ni.ifaddresses('eth0')[ni.AF_INET][0]['addr']
 
 dirs = "/root/Desktop/"
 
+##Stop changing shit here
 
-
-##Stop changing shit here############
 start = time.time()
 
 class bcolors:
@@ -34,7 +32,7 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 
-# Creates a function for multiprocessing. Several things at once.
+# Creates a function for multiprocessing.
 def multProc(targetin, scanip, port):
     jobs = []
     p = multiprocessing.Process(target=targetin, args=(scanip,port))
@@ -42,6 +40,7 @@ def multProc(targetin, scanip, port):
     p.start()
     return
 
+# Functions for service specific connections.
 def connect_to_port(ip_address, port, service):
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -71,7 +70,7 @@ def connect_to_port(ip_address, port, service):
     s.close()
 
 
-
+#Functions for writing into templates
 def write_to_file(ip_address, enum_type, data):
     file_path_linux = "%s%s/mapping-linux.md" % (dirs, ip_address)
     file_path_windows = "%s%s/mapping-windows.md" % (dirs, ip_address)
@@ -117,6 +116,7 @@ def write_to_file(ip_address, enum_type, data):
             subprocess.check_output("replace INSERTFULLTCPSCAN \"" + data + "\"  -- " + path, shell=True)
     return
 
+#Scanning functions
 def dirb(ip_address, port, url_start):
     print bcolors.HEADER + "INFO: Starting dirb scan for " + ip_address + bcolors.ENDC
     DIRBSCAN = "gobuster -u %s://%s:%s -e -w /usr/share/wordlists/dirb/common.txt -t 20 | tee %s%s/webapp_scans/%s-dirb-%s.txt" % (url_start, ip_address, port, dirs, ip_address, url_start, ip_address)
@@ -316,6 +316,7 @@ def tcpEnum(ip_address):
     write_to_file(ip_address, "fulltcpscan", tcp_results)
     return
 
+#Starting funtion to parse and pipe to multiprocessing
 def nmapScan(ip_address):
     ip_address = ip_address.strip()
     print "Current default output directory set as " + dirs
@@ -373,7 +374,7 @@ def nmapScan(ip_address):
 
 
 
-   # go through the service dictionary to call additional targeted enumeration functions
+   #Search through the service dictionary to call additional targeted enumeration functions
     for serv in serv_dict:
         ports = serv_dict[serv]
         if (serv == "http") or (serv == "http-proxy") or (serv == "http-alt") or (serv == "http?"):
@@ -413,7 +414,7 @@ def nmapScan(ip_address):
    
     return
 
-
+#PSA's
 print bcolors.HEADER
 print "------------------------------------------------------------"
 print "!!!!                     DOUBLETAP                     !!!!!"
@@ -439,6 +440,7 @@ if len(sys.argv) < 2:
 
 print bcolors.ENDC
 
+#Main start and folder creation
 if __name__=='__main__':
 
     # Setting ip targets
