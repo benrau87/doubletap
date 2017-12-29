@@ -266,9 +266,9 @@ def udpScan(ip_address):
     udpscan_results = subprocess.check_output(UDPSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with UDP-Nmap scan for " + ip_address + bcolors.ENDC
     print udpscan_results
-    write_to_file(ip_address, "udpscan", udpscan_results)
     UNICORNSCAN = "unicornscan -mU -v -I %s > %s%s/port_scans/unicorn_udp_%s.txt" % (ip_address, dirs, ip_address, ip_address)
     unicornscan_results = subprocess.check_output(UNICORNSCAN, shell=True)
+    write_to_file(ip_address, "udpscan", unicornscan_results)
     print bcolors.OKGREEN + "INFO: CHECK FILE - Finished with UNICORN-scan for " + ip_address + bcolors.ENDC
     return
 
@@ -303,9 +303,8 @@ def pop3Scan(ip_address, port):
     connect_to_port(ip_address, port, "pop3")
 
 def vulnEnum(ip_address):
-    print bcolors.HEADER + "INFO: Detected vulns on " + ip_address  + bcolors.ENDC
-    print bcolors.HEADER + "INFO: Performing Vulnerability based scans for " + ip_address + bcolors.ENDC
-    VULN = "nmap --script=vulners --script-timeout=300 %s -oN %s%s/port_scans/vuln_%s.nmap" % (ip_address, dirs, ip_address, ip_address)
+    print bcolors.OKGREEN + "INFO: Performing Vulnerability based scans for " + ip_address + bcolors.ENDC
+    VULN = "nmap -sV --script=vulners --script-timeout=300 %s -oN %s%s/port_scans/vuln_%s.nmap" % (ip_address, dirs, ip_address, ip_address)
     vuln_results = subprocess.check_output(VULN, shell=True)
     print bcolors.OKGREEN + "INFO: CHECK FILE - Finished with VULN-scan for " + ip_address + bcolors.ENDC
     print vuln_results
@@ -313,7 +312,7 @@ def vulnEnum(ip_address):
     return
 
 def tcpEnum(ip_address):
-    print bcolors.HEADER + "INFO: Running full tcp scan on " + ip_address  + bcolors.ENDC
+    print bcolors.OKGREEN + "INFO: Running full tcp scan on " + ip_address  + bcolors.ENDC
     TCPALL = "unicornscan -p a %s | tee %s%s/port_scans/fulltcp_%s.nmap" % (ip_address, dirs, ip_address, ip_address)
     tcp_results = subprocess.check_output(TCPALL, shell=True)
     print bcolors.OKGREEN + "INFO: CHECK FILE - Finished with FULL_TCP-scan for " + ip_address + bcolors.ENDC
@@ -345,18 +344,18 @@ def nmapScan(ip_address):
     print open_ports
     ports_dirty= ",".join(re.findall('\[(.*?)\]', open_ports))
     port_list = ports_dirty.replace(' ', '')
-    print bcolors.OKGREEN + "INFO: Running general TCP/UDP nmap scans for " + ip_address + bcolors.ENDC
-    TCPSCAN = "nmap -sV -O -p%s %s -oN %s%s/%s.nmap"  % (port_list, ip_address, dirs, ip_address, ip_address)
-    print bcolors.HEADER + TCPSCAN + bcolors.ENDC
-    results = subprocess.check_output(TCPSCAN, shell=True)
-    print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with BASIC Nmap-scan for " + ip_address + bcolors.ENDC
-    print results
     m = multiprocessing.Process(target=tcpEnum, args=(scanip,))
     m.start()
     p = multiprocessing.Process(target=udpScan, args=(scanip,))
     p.start()
     l = multiprocessing.Process(target=vulnEnum, args=(scanip,))
     l.start()
+    print bcolors.OKGREEN + "INFO: Running general TCP/UDP nmap scans for " + ip_address + bcolors.ENDC
+    TCPSCAN = "nmap -sV -O -p%s %s -oN %s%s/%s.nmap"  % (port_list, ip_address, dirs, ip_address, ip_address)
+    print bcolors.HEADER + TCPSCAN + bcolors.ENDC
+    results = subprocess.check_output(TCPSCAN, shell=True)
+    print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with BASIC Nmap-scan for " + ip_address + bcolors.ENDC
+    print results
     write_to_file(ip_address, "portscan", results)
     lines = results.split("\n")
     serv_dict = {}
