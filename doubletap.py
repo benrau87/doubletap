@@ -113,6 +113,8 @@ def write_to_file(ip_address, enum_type, data):
             subprocess.check_output("replace INSERTROBOTS \"" + data + "\"  -- " + path, shell=True)
         if enum_type == "sshscan":
             subprocess.check_output("replace INSERTSSHBRUTE \"" + data + "\"  -- " + path, shell=True)
+        if enum_type == "fulltcpscan":
+            subprocess.check_output("replace INSERTFULLTCPSCAN \"" + data + "\"  -- " + path, shell=True)
     return
 
 def dirb(ip_address, port, url_start):
@@ -305,6 +307,15 @@ def vulnEnum(ip_address):
     write_to_file(ip_address, "vulnscan", vuln_results)
     return
 
+def tcpEnum(ip_address):
+    print bcolors.HEADER + "INFO: Running full tcp scan on " + ip_address  + bcolors.ENDC
+    TCPALL = "unicornscan -p a %s | tee %s%s/port_scans/fulltcp_%s.nmap" % (ip_address, dirs, ip_address, ip_address)
+    tcp_results = subprocess.check_output(TCPALL, shell=True)
+    print bcolors.OKGREEN + "INFO: CHECK FILE - Finished with FULL_TCP-scan for " + ip_address + bcolors.ENDC
+    print tcp_results
+    write_to_file(ip_address, "fulltcpscan", tcp_results)
+    return
+
 def nmapScan(ip_address):
     ip_address = ip_address.strip()
     print "Current default output directory set as " + dirs
@@ -313,6 +324,16 @@ def nmapScan(ip_address):
     PORTSCAN = "unicornscan %s "  % (ip_address)
     print bcolors.HEADER + PORTSCAN + bcolors.ENDC
     open_ports = subprocess.check_output(PORTSCAN, shell=True)
+    if not open_ports:
+        print bcolors.FAIL + "INFO: There are no open common ports for " + ip_address + bcolors.ENDC
+        print bcolors.OKGREEN + "INFO: Running full TCP Unicorn scan for " + ip_address + " this may take a while..." + bcolors.ENDC
+        PORTSCAN = "unicornscan -p a %s "  % (ip_address)
+        print bcolors.HEADER + PORTSCAN + bcolors.ENDC
+        open_ports = subprocess.check_output(PORTSCAN, shell=True)
+        if not open_ports:
+            print bcolors.FAIL + "FAIL: There are no open ports for " + ip_address + bcolors.ENDC
+            return
+        return
     print open_ports
     ports_dirty= ",".join(re.findall('\[(.*?)\]', open_ports))
     port_list = ports_dirty.replace(' ', '')
@@ -322,6 +343,8 @@ def nmapScan(ip_address):
     results = subprocess.check_output(TCPSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with BASIC Nmap-scan for " + ip_address + bcolors.ENDC
     print results
+    m = multiprocessing.Process(target=tcpEnum, args=(scanip,))
+    m.start()
     p = multiprocessing.Process(target=udpScan, args=(scanip,))
     p.start()
     l = multiprocessing.Process(target=vulnEnum, args=(scanip,))
