@@ -14,8 +14,12 @@ import socket
 ##Change me if needed
 
 myip = ni.ifaddresses('eth0')[ni.AF_INET][0]['addr']
+#myip = ni.ifaddresses('tap0')[ni.AF_INET][0]['addr']
+#myip = ni.ifaddresses('wlan0')[ni.AF_INET][0]['addr']
 
 dirs = "/root/Desktop/"
+#dirs = "/root/Dropbox/Engagements/"
+#dirs = "/root/Desktop/Machines/"
 
 ##Stop changing shit here
 
