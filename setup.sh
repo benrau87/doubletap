@@ -122,6 +122,17 @@ chmod +x "${file}"
 
 git clone -q -b master https://github.com/vulnersCom/nmap-vulners /tmp/vulners
 cp /tmp/vulners/vulners.nse /user/share/nmap/scripts
+
+cd /usr/share/nmap/scripts/vuln/
+wget -N http://www.computec.ch/projekte/vulscan/download/cve.csv
+wget -N http://www.computec.ch/projekte/vulscan/download/exploitdb.csv
+wget -N http://www.computec.ch/projekte/vulscan/download/openvas.csv
+wget -N http://www.computec.ch/projekte/vulscan/download/osvdb.csv
+wget -N http://www.computec.ch/projekte/vulscan/download/scipvuldb.csv
+wget -N http://www.computec.ch/projekte/vulscan/download/securityfocus.csv
+wget -N http://www.computec.ch/projekte/vulscan/download/securitytracker.csv
+wget -N http://www.computec.ch/projekte/vulscan/download/xforce.csv
+
 nmap --script-updatedb
 
 print_good Finished!
