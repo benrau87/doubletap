@@ -302,9 +302,10 @@ def pop3Scan(ip_address, port):
     print bcolors.HEADER + "INFO: Detected POP3 on " + ip_address + ":" + port  + bcolors.ENDC
     connect_to_port(ip_address, port, "pop3")
 
-def vulnEnum(ip_address):
+def vulnEnum(ip_address, port_list):
     print bcolors.OKGREEN + "INFO: Performing Vulnerability based scans for " + ip_address + bcolors.ENDC
-    VULN = "nmap -sV --script=vulners --script-timeout=300 %s -oN %s%s/port_scans/vuln_%s.nmap" % (ip_address, dirs, ip_address, ip_address)
+#    VULN = "nmap -p%s --script=vulners --script-timeout=300 %s -oN %s%s/port_scans/vuln_%s.nmap" % (port_list, ip_address, dirs, ip_address, ip_address)
+    VULN = "nmap -sV -p%s --script=vuln --script-timeout=300 %s -oN %s%s/port_scans/vuln_%s.nmap" % (port_list, ip_address, dirs, ip_address, ip_address)
     vuln_results = subprocess.check_output(VULN, shell=True)
     print bcolors.OKGREEN + "INFO: CHECK FILE - Finished with VULN-scan for " + ip_address + bcolors.ENDC
     print vuln_results
@@ -348,7 +349,7 @@ def nmapScan(ip_address):
     m.start()
     p = multiprocessing.Process(target=udpScan, args=(scanip,))
     p.start()
-    l = multiprocessing.Process(target=vulnEnum, args=(scanip,))
+    l = multiprocessing.Process(target=vulnEnum, args=(scanip, port_list))
     l.start()
     print bcolors.OKGREEN + "INFO: Running general TCP/UDP nmap scans for " + ip_address + bcolors.ENDC
     TCPSCAN = "nmap -sV -O -p%s %s -oN %s%s/%s.nmap"  % (port_list, ip_address, dirs, ip_address, ip_address)
