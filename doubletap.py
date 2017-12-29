@@ -14,12 +14,8 @@ import socket
 ##Change me if needed
 
 myip = ni.ifaddresses('eth0')[ni.AF_INET][0]['addr']
-#myip = ni.ifaddresses('tap0')[ni.AF_INET][0]['addr']
-#myip = ni.ifaddresses('wlan0')[ni.AF_INET][0]['addr']
 
 dirs = "/root/Desktop/"
-#dirs = "/root/Dropbox/Engagements/"
-#dirs = "/root/Desktop/Machines/"
 
 ##Stop changing shit here
 
@@ -118,24 +114,38 @@ def write_to_file(ip_address, enum_type, data):
             subprocess.check_output("replace INSERTSSHBRUTE \"" + data + "\"  -- " + path, shell=True)
         if enum_type == "fulltcpscan":
             subprocess.check_output("replace INSERTFULLTCPSCAN \"" + data + "\"  -- " + path, shell=True)
+        if enum_type == "udpscan":
+            subprocess.check_output("replace INSERTUDPSCAN \"" + data + "\"  -- " + path, shell=True)
     return
 
 #Scanning functions
 def dirb(ip_address, port, url_start):
     print bcolors.HEADER + "INFO: Starting dirb scan for " + ip_address + bcolors.ENDC
-    DIRBSCAN = "gobuster -u %s://%s:%s -e -w /usr/share/wordlists/dirb/common.txt -t 20 | tee %s%s/webapp_scans/%s-dirb-%s.txt" % (url_start, ip_address, port, dirs, ip_address, url_start, ip_address)
+    DIRBSCAN = "gobuster -u %s://%s:%s -e -f -n -w /usr/share/wordlists/dirb/common.txt -t 100 | grep -o 'http.*' | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g' | tee -a %s%s/webapp_scans/%s-dirb-%s.txt" % (url_start, ip_address, port, dirs, ip_address, url_start, ip_address)
     #DIRBSCAN = "dirb %s://%s:%s -S -o" + dirs + "/dirb-%s.txt" % (url_start, ip_address, port, ip_address, ip_address)
-    print bcolors.HEADER + DIRBSCAN + bcolors.ENDC
     results_dirb = subprocess.check_output(DIRBSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with DIRB-scan for " + ip_address + bcolors.ENDC
     print results_dirb
     write_to_file(ip_address, "dirb", results_dirb)
+
+    wig_process = multiprocessing.Process(target=wig, args=(ip_address,port,url_start))
+    wig_process.start()
+
+    return
+
+def parsero(ip_address, port, url_start):
+    print bcolors.HEADER + "INFO: Starting parsero scan for " + ip_address + bcolors.ENDC
+    ROBOTSSCAN = "parsero-git -o -u %s://%s:%s | grep OK | grep -o 'http.*' | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g' | tee -a %s%s/webapp_scans/%s-dirb-%s.txt" % (url_start, ip_address, port, dirs, ip_address, url_start, ip_address)
+    results_parsero = subprocess.check_output(ROBOTSSCAN, shell=True)
+    print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with PARSERO-scan for " + ip_address + bcolors.ENDC
+    print results_parsero
+    write_to_file(ip_address, "parsero", results_parsero)
     return
 
 def wig(ip_address, port, url_start):
     print bcolors.HEADER + "INFO: Starting wig scan for " + ip_address + bcolors.ENDC
-    WIGSCAN = "wig-git %s://%s:%s -a -q  -w %s%s/webapp_scans/%s-wig-%s.txt | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'" % (url_start, ip_address, port, dirs, ip_address, url_start, ip_address)
-    print bcolors.HEADER + WIGSCAN + bcolors.ENDC
+ #   WIGSCAN = "wig-git %s://%s:%s -a -q  -w %s%s/webapp_scans/%s-wig-%s.txt | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'" % (url_start, ip_address, port, dirs, ip_address, url_start, ip_address)
+    WIGSCAN = "wig-git -t 100 -l %s%s/webapp_scans/http-dirb-10.11.1.8.txt --no_cache_load --no_cache_save -w %s%s/webapp_scans/%s-wig-%s.txt | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'" % (dirs, ip_address, dirs, ip_address, url_start, ip_address)
     results_wig = subprocess.check_output(WIGSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with WIG-scan for " + ip_address + bcolors.ENDC
     print results_wig
@@ -150,16 +160,6 @@ def nikto(ip_address, port, url_start):
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with NIKTO-scan for " + ip_address + bcolors.ENDC
     print results_nikto
     write_to_file(ip_address, "nikto", results_nikto)
-    return
-
-def parsero(ip_address, port, url_start):
-    print bcolors.HEADER + "INFO: Starting parsero scan for " + ip_address + bcolors.ENDC
-    ROBOTSSCAN = "parsero-git -u %s://%s:%s | grep OK | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g' | tee %s%s/webapp_scans/robots-%s-%s:%s.txt" % (url_start, ip_address, port, dirs, ip_address, url_start, ip_address, port)
-    print bcolors.HEADER + ROBOTSSCAN + bcolors.ENDC
-    results_parsero = subprocess.check_output(ROBOTSSCAN, shell=True)
-    print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with PARSERO-scan for " + ip_address + bcolors.ENDC
-    print results_parsero
-    write_to_file(ip_address, "parsero", results_parsero)
     return
 
 def ssl(ip_address, port, url_start):
@@ -179,8 +179,8 @@ def httpEnum(ip_address, port):
     dirb_process.start()
     nikto_process = multiprocessing.Process(target=nikto, args=(ip_address,port,"http"))
     nikto_process.start()
-    wig_process = multiprocessing.Process(target=wig, args=(ip_address,port,"http"))
-    wig_process.start()
+#    wig_process = multiprocessing.Process(target=wig, args=(ip_address,port,"http"))
+#    wig_process.start()
     parsero_process = multiprocessing.Process(target=parsero, args=(ip_address,port,"http"))
     parsero_process.start()
     return
@@ -192,8 +192,8 @@ def httpsEnum(ip_address, port):
     dirb_process.start()
     nikto_process = multiprocessing.Process(target=nikto, args=(ip_address,port,"https"))
     nikto_process.start()
-    wig_process = multiprocessing.Process(target=wig, args=(ip_address,port,"https"))
-    wig_process.start()
+#    wig_process = multiprocessing.Process(target=wig, args=(ip_address,port,"https"))
+#    wig_process.start()
     parsero_process = multiprocessing.Process(target=parsero, args=(ip_address,port,"https"))
     parsero_process.start()
     ssl_process = multiprocessing.Process(target=ssl, args=(ip_address,port,"https"))
@@ -266,6 +266,7 @@ def udpScan(ip_address):
     udpscan_results = subprocess.check_output(UDPSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with UDP-Nmap scan for " + ip_address + bcolors.ENDC
     print udpscan_results
+    write_to_file(ip_address, "udpscan", udpscan_results)
     UNICORNSCAN = "unicornscan -mU -v -I %s > %s%s/port_scans/unicorn_udp_%s.txt" % (ip_address, dirs, ip_address, ip_address)
     unicornscan_results = subprocess.check_output(UNICORNSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: CHECK FILE - Finished with UNICORN-scan for " + ip_address + bcolors.ENDC
@@ -304,7 +305,7 @@ def pop3Scan(ip_address, port):
 def vulnEnum(ip_address):
     print bcolors.HEADER + "INFO: Detected vulns on " + ip_address  + bcolors.ENDC
     print bcolors.HEADER + "INFO: Performing Vulnerability based scans for " + ip_address + bcolors.ENDC
-    VULN = "nmap --script=vuln --script-timeout=120 %s -oN %s%s/port_scans/vuln_%s.nmap" % (ip_address, dirs, ip_address, ip_address)
+    VULN = "nmap --script=vuln --script-timeout=180 %s -oN %s%s/port_scans/vuln_%s.nmap" % (ip_address, dirs, ip_address, ip_address)
     vuln_results = subprocess.check_output(VULN, shell=True)
     print bcolors.OKGREEN + "INFO: CHECK FILE - Finished with VULN-scan for " + ip_address + bcolors.ENDC
     print vuln_results
@@ -323,8 +324,10 @@ def tcpEnum(ip_address):
 #Starting funtion to parse and pipe to multiprocessing
 def nmapScan(ip_address):
     ip_address = ip_address.strip()
-    print "Current default output directory set as " + dirs
-    print "Host IP set as " + myip
+    print ""
+    print bcolors.OKGREEN + "INFO: Current default output directory set as " + bcolors.ENDC + dirs
+    print bcolors.OKGREEN + "INFO: Host IP set as " + bcolors.ENDC + myip
+    print ""
     print bcolors.OKGREEN + "INFO: Running general TCP Unicorn scan for " + ip_address + bcolors.ENDC
     PORTSCAN = "unicornscan %s "  % (ip_address)
     print bcolors.HEADER + PORTSCAN + bcolors.ENDC
