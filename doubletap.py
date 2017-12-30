@@ -380,7 +380,7 @@ def nmapScan(ip_address):
    #Search through the service dictionary to call additional targeted enumeration functions
     for serv in serv_dict:
         ports = serv_dict[serv]
-        if (serv == "http") or (serv == "http-proxy") or (serv == "http-alt") or (serv == "http?"):
+        if (serv == "http") or (serv == "http-proxy") or (serv == "http-alt") or (serv == "http?") or (serv == "http-proxy?"):
             for port in ports:
                 port = port.split("/")[0]
                 multProc(httpEnum, ip_address, port)
