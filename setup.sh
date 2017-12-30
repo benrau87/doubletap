@@ -120,7 +120,7 @@ cd /opt/wig-git/ && python3 wig.py "\$@"
 EOF
 chmod +x "${file}"
 
-git clone -q -b master https://github.com/vulnersCom/nmap-vulners /tmp/vulners
+git clone https://github.com/vulnersCom/nmap-vulners /tmp/vulners
 cp /tmp/vulners/vulners.nse /user/share/nmap/scripts
 
 cd /usr/share/nmap/scripts/vulscan/
