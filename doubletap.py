@@ -144,7 +144,6 @@ def parsero(ip_address, port, url_start):
 
 def wig(ip_address, port, url_start):
     print bcolors.HEADER + "INFO: Starting wig scan for " + ip_address + bcolors.ENDC
- #   WIGSCAN = "wig-git %s://%s:%s -a -q  -w %s%s/webapp_scans/%s-wig-%s.txt | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'" % (url_start, ip_address, port, dirs, ip_address, url_start, ip_address)
     WIGSCAN = "wig-git -t 100 -l %s%s/webapp_scans/http-dirb-10.11.1.8.txt --no_cache_load --no_cache_save -w %s%s/webapp_scans/%s-wig-%s.txt | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'" % (dirs, ip_address, dirs, ip_address, url_start, ip_address)
     results_wig = subprocess.check_output(WIGSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with WIG-scan for " + ip_address + bcolors.ENDC
@@ -179,8 +178,6 @@ def httpEnum(ip_address, port):
     dirb_process.start()
     nikto_process = multiprocessing.Process(target=nikto, args=(ip_address,port,"http"))
     nikto_process.start()
-#    wig_process = multiprocessing.Process(target=wig, args=(ip_address,port,"http"))
-#    wig_process.start()
     parsero_process = multiprocessing.Process(target=parsero, args=(ip_address,port,"http"))
     parsero_process.start()
     return
@@ -192,8 +189,6 @@ def httpsEnum(ip_address, port):
     dirb_process.start()
     nikto_process = multiprocessing.Process(target=nikto, args=(ip_address,port,"https"))
     nikto_process.start()
-#    wig_process = multiprocessing.Process(target=wig, args=(ip_address,port,"https"))
-#    wig_process.start()
     parsero_process = multiprocessing.Process(target=parsero, args=(ip_address,port,"https"))
     parsero_process.start()
     ssl_process = multiprocessing.Process(target=ssl, args=(ip_address,port,"https"))
@@ -264,12 +259,13 @@ def udpScan(ip_address):
     UDPSCAN = "nmap -vv -Pn -A -sC -sU -T 4 --top-ports 200 -oN %s%s/port_scans/udp_%s.nmap %s"  % (dirs, ip_address, ip_address, ip_address)
     print bcolors.HEADER + UDPSCAN + bcolors.ENDC
     udpscan_results = subprocess.check_output(UDPSCAN, shell=True)
-    print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with UDP-Nmap scan for " + ip_address + bcolors.ENDC
+    print bcolors.OKGREEN + "INFO: CHECKFILE - Finished with UDP-Nmap scan for " + ip_address + bcolors.ENDC
     print udpscan_results
+    write_to_file(ip_address, "udpscan", udpscan_results)
     UNICORNSCAN = "unicornscan -mU -v -I %s > %s%s/port_scans/unicorn_udp_%s.txt" % (ip_address, dirs, ip_address, ip_address)
     unicornscan_results = subprocess.check_output(UNICORNSCAN, shell=True)
-    write_to_file(ip_address, "udpscan", unicornscan_results)
-    print bcolors.OKGREEN + "INFO: CHECK FILE - Finished with UNICORN-scan for " + ip_address + bcolors.ENDC
+    print bcolors.OKGREEN + "INFO: RESULTS BELOW - Finished with UNICORN-UDP-scan for " + ip_address + bcolors.ENDC
+    print unicornscan_results
     return
 
 def nfsEnum(ip_address, port):
@@ -304,8 +300,8 @@ def pop3Scan(ip_address, port):
 
 def vulnEnum(ip_address, port_list):
     print bcolors.OKGREEN + "INFO: Performing Vulnerability based scans for " + ip_address + bcolors.ENDC
-#    VULN = "nmap -p%s --script=vulners --script-timeout=300 %s -oN %s%s/port_scans/vuln_%s.nmap" % (port_list, ip_address, dirs, ip_address, ip_address)
-    VULN = "nmap -sV -p%s --script=vuln --script-timeout=300 %s -oN %s%s/port_scans/vuln_%s.nmap" % (port_list, ip_address, dirs, ip_address, ip_address)
+    VULN = "nmap -p%s --script=vulners --script-timeout=300 %s -oN %s%s/port_scans/vuln_%s.nmap" % (port_list, ip_address, dirs, ip_address, ip_address)
+    #VULN = "nmap -sV -p%s --script=vuln --script-timeout=300 %s -oN %s%s/port_scans/vuln_%s.nmap" % (port_list, ip_address, dirs, ip_address, ip_address)
     vuln_results = subprocess.check_output(VULN, shell=True)
     print bcolors.OKGREEN + "INFO: CHECK FILE - Finished with VULN-scan for " + ip_address + bcolors.ENDC
     print vuln_results
