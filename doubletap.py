@@ -300,7 +300,7 @@ def pop3Scan(ip_address, port):
 
 def vulnEnum(ip_address, port_list):
     print bcolors.OKGREEN + "INFO: Performing Vulnerability based scans for " + ip_address + bcolors.ENDC
-    VULN = "nmap -p%s --script=vulners --script-timeout=300 %s -oN %s%s/port_scans/vuln_%s.nmap" % (port_list, ip_address, dirs, ip_address, ip_address)
+    VULN = "nmap -sV -p%s --script=vulners --script-timeout=300 %s -oN %s%s/port_scans/vuln_%s.nmap" % (port_list, ip_address, dirs, ip_address, ip_address)
     #VULN = "nmap -sV -p%s --script=vuln --script-timeout=300 %s -oN %s%s/port_scans/vuln_%s.nmap" % (port_list, ip_address, dirs, ip_address, ip_address)
     vuln_results = subprocess.check_output(VULN, shell=True)
     print bcolors.OKGREEN + "INFO: CHECK FILE - Finished with VULN-scan for " + ip_address + bcolors.ENDC
