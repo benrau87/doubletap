@@ -144,7 +144,7 @@ def parsero(ip_address, port, url_start):
 
 def wig(ip_address, port, url_start):
     print bcolors.HEADER + "INFO: Starting wig scan for " + ip_address + bcolors.ENDC
-    WIGSCAN = "wig-git -t 100 -l %s%s/webapp_scans/http-dirb-10.11.1.8.txt --no_cache_load --no_cache_save -w %s%s/webapp_scans/%s-wig-%s.txt | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'" % (dirs, ip_address, dirs, ip_address, url_start, ip_address)
+    WIGSCAN = "wig-git -t 100 -l %s%s/webapp_scans/http-dirb-%s.txt --no_cache_load --no_cache_save -w %s%s/webapp_scans/%s-wig-%s.txt | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'" % (dirs, ip_address, ip_address, dirs, ip_address, url_start, ip_address)
     results_wig = subprocess.check_output(WIGSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with WIG-scan for " + ip_address + bcolors.ENDC
     print results_wig
