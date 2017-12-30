@@ -471,4 +471,5 @@ if __name__=='__main__':
            
 
         p = multiprocessing.Process(target=nmapScan, args=(scanip,))
+        time.sleep(2) #Just a nice wait for unicornscan 
         p.start()
