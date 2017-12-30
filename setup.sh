@@ -121,7 +121,7 @@ EOF
 chmod +x "${file}"
 
 git clone https://github.com/vulnersCom/nmap-vulners /tmp/vulners
-cp /tmp/vulners/vulners.nse /user/share/nmap/scripts
+cp /tmp/vulners/vulners.nse /usr/share/nmap/scripts
 
 cd /usr/share/nmap/scripts/vulscan/
 wget -N http://www.computec.ch/projekte/vulscan/download/cve.csv
