@@ -143,7 +143,7 @@ def dirbssl(ip_address, port, url_start):
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with DIRB_SSL-scan for " + ip_address + bcolors.ENDC
     print results_dirb
     write_to_file(ip_address, "dirbssl", results_dirb)
-    wig_process = multiprocessing.Process(target=wig, args=(ip_address,port,url_start))
+    wig_process = multiprocessing.Process(target=wigssl, args=(ip_address,port,url_start))
     wig_process.start()
     return
 
