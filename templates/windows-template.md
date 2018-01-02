@@ -286,6 +286,8 @@ hydra -I -t 4 -L /root/Dropbox/Wordlists/quick_hit.txt -P /root/Dropbox/Wordlist
 
 INSERTWIGSCAN
 
+INSERTWIGSSLSCAN
+
 ### Nikto scan
 
 INSERTNIKTOSCAN
@@ -293,6 +295,8 @@ INSERTNIKTOSCAN
 ### Directories
 
 INSERTDIRBSCAN
+
+INSERTDIRBSSLSCAN
 
 Checking Directories
 ```
@@ -303,7 +307,6 @@ gobuster -u INSERTIPADDRESS -w /usr/share/wordlists/dirb/common.txt -t 100
 ### Robots
 
 INSERTROBOTS
-
 
 ### Default/Weak login
 
