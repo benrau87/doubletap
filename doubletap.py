@@ -143,7 +143,7 @@ def dirbssl(ip_address, port, url_start):
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with DIRB_SSL-scan for " + ip_address + bcolors.ENDC
     print results_dirb
     write_to_file(ip_address, "dirbssl", results_dirb)
-    wig_process = multiprocessing.Process(target=wigssl, args=(ip_address,port,url_start))
+    wig_process = multiprocessing.Process(target=wig, args=(ip_address,port,url_start))
     wig_process.start()
     return
 
@@ -188,7 +188,7 @@ def nikto(ip_address, port, url_start):
 
 def ssl(ip_address, port, url_start):
     print bcolors.HEADER + "INFO: Starting ssl scan for " + ip_address + bcolors.ENDC
-    SSLSCAN = "sslscan %s:%s | tee %s%s/webapp_scans/ssl_scan_%s" % (ip_address, port, dirs, ip_address, ip_address)
+    SSLSCAN = "sslscan %s:%s |  sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g' |  tee %s%s/webapp_scans/ssl_scan_%s" % (ip_address, port, dirs, ip_address, ip_address)
     print bcolors.HEADER + SSLSCAN + bcolors.ENDC
     results_ssl = subprocess.check_output(SSLSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: CHECK FILE - Finished with SSL-scan for " + ip_address + bcolors.ENDC
