@@ -138,10 +138,17 @@ INSERTRPCMAP
 
 ### Port 143 - Imap
 
-### Port 139/445 - SMB
+### Port 139/445 
 
+### SMBmap
 INSERTSMBMAP
 
+```
+mkdir /tmp/share
+mount -t cifs //INSERTIPADDRESS/C$ /tmp/share
+```
+
+### Password Policy
 INSERTSAMRDUMP
 
 ```
@@ -164,7 +171,6 @@ smbclient //INSERTIPADDRESS/admin$
 smbclient \\\\INSERTIPADDRESS\\ipc$ -U john
 smbclient //INSERTIPADDRESS/ipc$ -U john  
 ```
-
 
 ### Port 161/162 UDP - SNMP
 
