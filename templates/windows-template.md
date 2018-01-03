@@ -105,7 +105,7 @@ INSERTPOP3CONNECT
 
 ### Port 135 - MSRPC
 
-Some versions are vulnerable.
+Some versions are vulnerable on Windows
 
 INSERTRPCMAP
 
@@ -121,10 +121,17 @@ searchsploit 03-026
 
 ```
 
-### Port 139/445 - SMB
+### Port 139/445 
 
+### SMBmap
 INSERTSMBMAP
 
+```
+mkdir /tmp/share
+mount -t cifs //INSERTIPADDRESS/C$ /tmp/share
+```
+
+### Password Policy
 INSERTSAMRDUMP
 
 ```
