@@ -46,10 +46,20 @@ List based of perceived probability of success. Note steps taken.
 6)
 ...
 ```
+## Notes
+```
 
--------
+
+```
+## Exploit Steps
+```
+
+
+```
+
+------------------------------------------------------------------------
 Privesc
--------
+------------------------------------------------------------------------
 
 ## Kernel Vulnerablities
 Get specific OS/patch versions and list possible exploits here
