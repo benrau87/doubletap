@@ -487,7 +487,7 @@ if __name__=='__main__':
             subprocess.check_output("mkdir " + dirs + scanip + "/port_scans", shell=True)
             print bcolors.OKGREEN + "INFO: Folder created here: " + dirs + scanip + bcolors.ENDC
             subprocess.check_output("cp /opt/doubletap-git/templates/windows-template.md " + dirs + scanip + "/mapping-windows.md", shell=True)
-            subprocess.check_output("cp /opt/doubletap-git/templates/worksheet-template.md " + dirs + scanip + "/worksheet.md", shell=True)
+            subprocess.check_output("cp /opt/doubletap-git/templates/worksheet-template.md " + dirs + scanip + "/" + scanip + "-worksheet.md", shell=True)
             subprocess.check_output("cp /opt/doubletap-git/templates/linux-template.md " + dirs + scanip + "/mapping-linux.md", shell=True)
             print bcolors.OKGREEN + "INFO: Added pentesting templates: " +  dirs + scanip + bcolors.ENDC
             subprocess.check_output("sed -i -e 's/INSERTIPADDRESS/" + scanip + "/g' " + dirs + scanip + "/mapping-windows.md", shell=True)
