@@ -244,7 +244,7 @@ def smtpEnum(ip_address, port):
 def smbEnum(ip_address, port):
     print "INFO: Detected SMB on " + ip_address + ":" + port
     print bcolors.HEADER + "INFO: Performing SMB based scans for " + ip_address + ":" + port + bcolors.ENDC
-    SMBMAP = "smbmap -H %s -R | tee %s%s/service_scans/smbmap_%s" % (ip_address, dirs, ip_address, ip_address)
+    SMBMAP = "smbmap -H %s | tee %s%s/service_scans/smbmap_%s" % (ip_address, dirs, ip_address, ip_address)
     smbmap_results = subprocess.check_output(SMBMAP, shell=True)
     print bcolors.OKGREEN + "INFO: CHECK FILE - Finished with SMBMap-scan for " + ip_address + bcolors.ENDC
     print smbmap_results
