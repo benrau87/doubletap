@@ -282,11 +282,6 @@ INSERTDIRBSCAN
 
 INSERTDIRBSSLSCAN
 
-Checking Directories
-```
-wig-git -t 100 -u INSERTIPADDRESS
-gobuster -u INSERTIPADDRESS -w /usr/share/wordlists/dirb/common.txt -t 100 
-```
 ### Robots
 
 INSERTROBOTS
@@ -331,6 +326,7 @@ Step 2:
 Start Secondary Scans
 ```
 gobuster -u http://INSERTIPADDRESS -e -f -n -w /usr/share/wordlists/dirb/big.txt
+gobuster -u INSERTIPADDRESS -w /usr/share/wordlists/dirb/common.txt -t 100 -x .php,.html,.asp
 wig-git http://INSERTIPADDRESS/path
 ```
 # CMS checker 
