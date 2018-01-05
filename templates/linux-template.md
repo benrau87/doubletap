@@ -330,9 +330,8 @@ View Source
 Step 2: 
 Start Secondary Scans
 ```
-
+gobuster -u http://INSERTIPADDRESS -e -f -n -w /usr/share/wordlists/dirb/big.txt
 wig-git http://INSERTIPADDRESS/path
-
 ```
 # CMS checker 
 cmsmap-git -t http://INSERTIPADDRESS
