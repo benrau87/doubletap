@@ -305,12 +305,6 @@ INSERTDIRBSCAN
 
 INSERTDIRBSSLSCAN
 
-Checking Directories
-```
-wig-git -t 100 -u INSERTIPADDRESS
-gobuster -u INSERTIPADDRESS -w /usr/share/wordlists/dirb/common.txt -t 100 
-```
-
 ### Robots
 
 INSERTROBOTS
