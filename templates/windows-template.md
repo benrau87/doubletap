@@ -356,6 +356,7 @@ Start Secondary Scans
 ```
 wig-git http://INSERTIPADDRESS/path
 gobuster -u http://INSERTIPADDRESS -e -f -n -w /usr/share/wordlists/dirb/big.txt
+gobuster -u INSERTIPADDRESS -w /usr/share/wordlists/dirb/common.txt -t 100 -x .asp
 ```
 # CMS checker 
 cmsmap-git -t http://INSERTIPADDRESS
