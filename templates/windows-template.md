@@ -674,12 +674,10 @@ Check this file:
 c:\WINDOWS\SchedLgU.Txt
 ```
 
-### Weak passwords
-
-Remote desktop
-
+### Weak/Stored passwords
 ```
-ncrack -vv --user george -P /usr/share/wordlists/rockyou.txt rdp://INSERTIPADDRESS
+cd \
+findstr /si password *.xml *.ini *.txt
 ```
 
 ### Useful commands
