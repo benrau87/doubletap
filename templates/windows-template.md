@@ -566,7 +566,15 @@ net localgroup administrators
 netsh firewall show state
 netsh firewall show config
 ```
-
+**Metaploit**
+```
+use post/multi/recon/local_exploit_suggester
+use post/windows/gather/enum_applications
+use post/windows/gather/enum_unattend
+use post/windows/gather/enum_patches 
+use exploit/windows/local/trusted_service_path
+use exploit/windows/local/service_permissions
+```
 ### Set path
 ```
 set PATH=%PATH%;C:\xampp\php
@@ -600,7 +608,6 @@ https://github.com/SecWiki/windows-kernel-exploits
 site:exploit-db.com windows XX XX
 ```
 
-
 ### Cleartext passwords
 
 ```
@@ -620,7 +627,6 @@ reg query "HKCU\Software\SimonTatham\PuTTY\Sessions"
 reg query HKLM /f password /t REG_SZ /s
 reg query HKCU /f password /t REG_SZ /s
 ```
-
 
 ### Reconfigure service parameters
 
@@ -648,9 +654,6 @@ netstat -ano
 ### Installed software
 
 ```
-# Metasploit
-ps
-
 tasklist /SVC
 net start
 reg query HKEY_LOCAL_MACHINE\SOFTWARE
@@ -661,7 +664,6 @@ C:\Program files
 C:\Program files (x86)
 Home directory of the user
 ```
-
 
 ### Scheduled tasks
 
@@ -690,7 +692,6 @@ netsh advfirewall set allprofiles state off
 netsh advfirewall set currentprofile state off
 
 ```
-
 **Add user and enable RDP**
 
 ```
