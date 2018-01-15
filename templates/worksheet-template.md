@@ -60,6 +60,12 @@ List based of perceived probability of success. Note steps taken.
 ------------------------------------------------------------------------
 Privesc
 ------------------------------------------------------------------------
+For Linux Limited Shells:
+python -c 'import pty; pty.spawn("/bin/sh")'
+Linux Path:
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+Windows Path:
+set PATH=%PATH%;C:\xampp\php;C:\Python27\Lib;C:\Python27\DLLs;C:\Python27\Lib\lib-tk
 
 ## Kernel Vulnerablities
 Get specific OS/patch versions and list possible exploits here
