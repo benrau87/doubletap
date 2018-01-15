@@ -51,6 +51,10 @@ List based of perceived probability of success. Note steps taken.
 
 
 ```
+## Found Users/Services/Credentials
+```
+
+```
 ## Exploit Steps
 ```
 
