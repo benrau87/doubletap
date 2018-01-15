@@ -323,7 +323,7 @@ def pop3Scan(ip_address, port):
     print bcolors.HEADER + "INFO: Detected POP3 on " + ip_address + ":" + port  + bcolors.ENDC
     connect_to_port(ip_address, port, "pop3")
 
-def vulnEnum(ip_address, port_list):
+def vulnEnum(ip_address):
     print bcolors.OKGREEN + "INFO: Performing Vulnerability based scans for " + ip_address + bcolors.ENDC
     VULN = "nmap -sV --script=vuln --script-timeout=600 %s -oN %s%s/port_scans/vuln_%s.nmap" % (ip_address, dirs, ip_address, ip_address)
     #VULN = "nmap -sV -p%s --script=vuln --script-timeout=300 %s -oN %s%s/port_scans/vuln_%s.nmap" % (port_list, ip_address, dirs, ip_address, ip_address)
