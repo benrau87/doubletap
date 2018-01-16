@@ -351,7 +351,7 @@ def vulnEnum(ip_address):
 def tcpEnum(ip_address):
     print bcolors.OKGREEN + "INFO: Running full tcp scan on " + ip_address  + bcolors.ENDC
     #TCPALL = "unicornscan -p a %s | tee %s%s/port_scans/fulltcp_%s.nmap" % (ip_address, dirs, ip_address, ip_address)
-    TCPALL = "nmap -sV -Pn -p1-65535 --max-retries 1 --max-scan-delay 10 --defeat-rst-ratelimit --open -T5 %s | tee %s%s/port_scans/fulltcp_%s.nmap" % (ip_address, dirs, ip_address, ip_address)
+    TCPALL = "nmap -sV -Pn -p1-65535 --max-retries 1 --max-scan-delay 10 --defeat-rst-ratelimit --open -T4 %s | tee %s%s/port_scans/fulltcp_%s.nmap" % (ip_address, dirs, ip_address, ip_address)
     tcp_results = subprocess.check_output(TCPALL, shell=True, stderr=None)
     print bcolors.OKGREEN + "INFO: CHECK FILE - Finished with FULL_TCP-scan for " + ip_address + bcolors.ENDC
     print tcp_results
