@@ -10,6 +10,7 @@ import fileinput
 import atexit
 import sys
 import socket
+import requests
 
 ##Change me if needed
 
@@ -78,8 +79,8 @@ def write_to_file(ip_address, enum_type, data):
     print bcolors.OKGREEN + "INFO: Writing " + enum_type + " to template files:\n " + file_path_linux + "   \n" + file_path_windows + bcolors.ENDC
 
     for path in paths:
-        if enum_type == "portscan":
-            subprocess.check_output("replace INSERTTCPSCAN \"" + data + "\"  -- " + path, shell=True)
+#        if enum_type == "portscan":
+#            subprocess.check_output("replace INSERTTCPSCAN \"" + data + "\"  -- " + path, shell=True)
         if enum_type == "dirb":
             subprocess.check_output("replace INSERTDIRBSCAN \"" + data + "\"  -- " + path, shell=True)
         if enum_type == "dirbssl":
@@ -131,20 +132,16 @@ def dirb(ip_address, port, url_start):
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with DIRB-scan for " + ip_address + bcolors.ENDC
     print results_dirb
     write_to_file(ip_address, "dirb", results_dirb)
-    wig_process = multiprocessing.Process(target=wig, args=(ip_address,port,url_start))
-    wig_process.start()
     return
 
 def dirbssl(ip_address, port, url_start):
     print bcolors.HEADER + "INFO: Starting dirb scan for " + ip_address + bcolors.ENDC
-    DIRBSCAN = "gobuster -u %s://%s:%s -e -f -n -k -w /usr/share/wordlists/dirb/common.txt -P /opt/doubletap-git/wordlists/quick_hit.txt -U /opt/doubletap-git/wordlists/quick_hit.txt -t 20 | grep -o 'http.*' | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g' | tee -a %s%s/webapp_scans/%s-dirb-%s.txt" % (url_start, ip_address, port, dirs, ip_address, url_start, ip_address)
+    DIRBSCAN = "gobuster -u %s://%s:%s -e -f -n -w /usr/share/wordlists/dirb/common.txt -P /opt/doubletap-git/wordlists/quick_hit.txt -U /opt/doubletap-git/wordlists/quick_hit.txt -t 20 | grep -o 'http.*' | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g' | tee -a %s%s/webapp_scans/%s-dirb-%s.txt" % (url_start, ip_address, port, dirs, ip_address, url_start, ip_address)
     #DIRBSCAN = "dirb %s://%s:%s -S -o" + dirs + "/dirb-%s.txt" % (url_start, ip_address, port, ip_address, ip_address)
     results_dirb = subprocess.check_output(DIRBSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with DIRB_SSL-scan for " + ip_address + bcolors.ENDC
     print results_dirb
     write_to_file(ip_address, "dirbssl", results_dirb)
-    wig_process = multiprocessing.Process(target=wig, args=(ip_address,port,url_start))
-    wig_process.start()
     return
 
 def parsero(ip_address, port, url_start):
@@ -158,7 +155,7 @@ def parsero(ip_address, port, url_start):
 
 def wig(ip_address, port, url_start):
     print bcolors.HEADER + "INFO: Starting wig scan for " + ip_address + bcolors.ENDC
-    WIGSCAN = "wig-git -t 20 -u %s://%s:%s -w %s%s/webapp_scans/%s-wig-%s.txt | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'" % (url_start, ip_address, port, dirs, ip_address, url_start, ip_address)
+    WIGSCAN = "wig-git -t 20 -u %s://%s:%s -q -d | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g' | tee -a %s%s/webapp_scans/%s-wig-%s.txt" % (url_start, ip_address, port, dirs, ip_address, url_start, ip_address)
     #WIGSCAN = "wig-git -t 20 -l %s%s/webapp_scans/http-dirb-%s.txt --no_cache_load --no_cache_save -w %s%s/webapp_scans/%s-wig-%s.txt | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'" % (dirs, ip_address, ip_address, dirs, ip_address, url_start, ip_address)
     results_wig = subprocess.check_output(WIGSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with WIG-scan for " + ip_address + bcolors.ENDC
@@ -168,7 +165,7 @@ def wig(ip_address, port, url_start):
 
 def wigssl(ip_address, port, url_start):
     print bcolors.HEADER + "INFO: Starting wig scan for " + ip_address + bcolors.ENDC
-    WIGSCAN = "wig-git -t 20 -u %s://%s:%s -w %s%s/webapp_scans/%s-wig-%s.txt | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'" % (url_start, ip_address, port, dirs, ip_address, url_start, ip_address)
+    WIGSCAN = "wig-git -t 20 -u %s://%s:%s -q -d | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g' | tee -a %s%s/webapp_scans/%s-wig-%s.txt" % (url_start, ip_address, port, dirs, ip_address, url_start, ip_address)
     #WIGSCAN = "wig-git -t 20 -l %s%s/webapp_scans/http-dirb-%s.txt --no_cache_load --no_cache_save -w %s%s/webapp_scans/%s-wig-%s.txt | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'" % (dirs, ip_address, ip_address, dirs, ip_address, url_start, ip_address)
     results_wig = subprocess.check_output(WIGSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with WIG-scan for " + ip_address + bcolors.ENDC
@@ -178,7 +175,7 @@ def wigssl(ip_address, port, url_start):
 
 def nikto(ip_address, port, url_start):
     print bcolors.HEADER + "INFO: Starting nikto scan for " + ip_address + bcolors.ENDC
-    NIKTOSCAN = "nikto -maxtime 5m -h %s://%s:%s -o %s%s/webapp_scans/nikto-%s-%s:%s.txt" % (url_start, ip_address, port, dirs, ip_address, url_start, ip_address, port)
+    NIKTOSCAN = "nikto -maxtime 5m -h %s://%s:%s | tee -a %s%s/webapp_scans/nikto-%s-%s.txt" % (url_start, ip_address, port, dirs, ip_address, url_start, ip_address)
     print bcolors.HEADER + NIKTOSCAN + bcolors.ENDC
     results_nikto = subprocess.check_output(NIKTOSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with NIKTO-scan for " + ip_address + bcolors.ENDC
@@ -198,26 +195,44 @@ def ssl(ip_address, port, url_start):
 
 def httpEnum(ip_address, port):
     print bcolors.HEADER + "INFO: Detected http on " + ip_address + ":" + port + bcolors.ENDC
-    print bcolors.HEADER + "INFO: Performing nmap web script scan for " + ip_address + ":" + port + bcolors.ENDC
-    dirb_process = multiprocessing.Process(target=dirb, args=(ip_address,port,"http"))
-    dirb_process.start()
+    print bcolors.HEADER + "INFO: Performing web app based scans for " + ip_address + ":" + port + bcolors.ENDC
     nikto_process = multiprocessing.Process(target=nikto, args=(ip_address,port,"http"))
     nikto_process.start()
     parsero_process = multiprocessing.Process(target=parsero, args=(ip_address,port,"http"))
     parsero_process.start()
+    wig_process = multiprocessing.Process(target=wig, args=(ip_address,port,"http"))
+    wig_process.start()
+    print bcolors.HEADER + "INFO: Checking for 200 response on bullshit page" + ip_address + ":" + port + bcolors.ENDC
+    url = "http://"+ip_address+":"+port+"/xxxxxxx"
+    response = requests.get(url)
+    if response.status_code == 404: #could also check == requests.codes.ok
+        print bcolors.HEADER + "INFO: Response was 404 on port "+port+", perfoming directory scans" + bcolors.ENDC
+        dirb_ssl_process = multiprocessing.Process(target=dirbssl, args=(ip_address,port,"https"))	
+        dirb_ssl_process.start()
+    else:
+        print bcolors.HEADER + "INFO: Response was not 404 on port "+port+", skipping directory scans" + bcolors.ENDC
     return
 
 def httpsEnum(ip_address, port):
     print bcolors.HEADER + "INFO: Detected https on " + ip_address + ":" + port + bcolors.ENDC
-    print bcolors.HEADER + "INFO: Performing nmap web script scan for " + ip_address + ":" + port + bcolors.ENDC
-    dirb_ssl_process = multiprocessing.Process(target=dirbssl, args=(ip_address,port,"https"))
-    dirb_ssl_process.start()
+    print bcolors.HEADER + "INFO: Performing web app based scans for " + ip_address + ":" + port + bcolors.ENDC
     nikto_process = multiprocessing.Process(target=nikto, args=(ip_address,port,"https"))
     nikto_process.start()
     parsero_process = multiprocessing.Process(target=parsero, args=(ip_address,port,"https"))
     parsero_process.start()
     ssl_process = multiprocessing.Process(target=ssl, args=(ip_address,port,"https"))
     ssl_process.start()
+    wig_process = multiprocessing.Process(target=wigssl, args=(ip_address,port,"https"))
+    wig_process.start()
+    print bcolors.HEADER + "INFO: Checking for 200 response on bullshit page" + ip_address + ":" + port + bcolors.ENDC
+    url = "https://"+ip_address+":"+port+"/xxxxxxx"
+    response = requests.get(url)
+    if response.status_code == 404: #could also check == requests.codes.ok
+        print bcolors.HEADER + "INFO: Response was 404 on port "+port+", perfoming directory scans" + bcolors.ENDC
+        dirb_ssl_process = multiprocessing.Process(target=dirbssl, args=(ip_address,port,"https"))	
+        dirb_ssl_process.start()
+    else:
+        print bcolors.HEADER + "INFO: Response was not 404 on port "+port+", skipping directory scans" + bcolors.ENDC
     return
 
 def mssqlEnum(ip_address, port):
@@ -380,7 +395,7 @@ def nmapScan(ip_address):
     results = subprocess.check_output(TCPSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with BASIC Nmap-scan for " + ip_address + bcolors.ENDC
     print results
-    write_to_file(ip_address, "portscan", results)
+#    write_to_file(ip_address, "portscan", results)
     lines = results.split("\n")
     serv_dict = {}
     for line in lines:
@@ -501,3 +516,4 @@ if __name__=='__main__':
         p = multiprocessing.Process(target=nmapScan, args=(scanip,))
         time.sleep(2) #Just a nice wait for unicornscan 
         p.start()
+        
