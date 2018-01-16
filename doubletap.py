@@ -384,8 +384,8 @@ def nmapScan(ip_address):
     #port_list = ports_dirty.replace(' ', '')
     m = multiprocessing.Process(target=tcpEnum, args=(scanip,))
     m.start()
-    #p = multiprocessing.Process(target=udpScan, args=(scanip,))
-    #p.start()
+    p = multiprocessing.Process(target=udpScan, args=(scanip,))
+    p.start()
     l = multiprocessing.Process(target=vulnEnum, args=(scanip,))
     l.start()
     print bcolors.OKGREEN + "INFO: Running general TCP/UDP nmap scans for " + ip_address + bcolors.ENDC
