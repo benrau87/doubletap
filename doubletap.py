@@ -202,15 +202,18 @@ def httpEnum(ip_address, port):
     parsero_process.start()
     wig_process = multiprocessing.Process(target=wig, args=(ip_address,port,"http"))
     wig_process.start()
-    print bcolors.HEADER + "INFO: Checking for 200 response on bullshit page" + ip_address + ":" + port + bcolors.ENDC
+    print bcolors.HEADER + "INFO: Checking for response on port " + port + bcolors.ENDC
     url = "http://"+ip_address+":"+port+"/xxxxxxx"
     response = requests.get(url)
+    print ""
+    print response
     if response.status_code == 404: #could also check == requests.codes.ok
         print bcolors.HEADER + "INFO: Response was 404 on port "+port+", perfoming directory scans" + bcolors.ENDC
         dirb_ssl_process = multiprocessing.Process(target=dirbssl, args=(ip_address,port,"https"))	
         dirb_ssl_process.start()
     else:
         print bcolors.HEADER + "INFO: Response was not 404 on port "+port+", skipping directory scans" + bcolors.ENDC
+    print ""
     return
 
 def httpsEnum(ip_address, port):
@@ -224,15 +227,18 @@ def httpsEnum(ip_address, port):
     ssl_process.start()
     wig_process = multiprocessing.Process(target=wigssl, args=(ip_address,port,"https"))
     wig_process.start()
-    print bcolors.HEADER + "INFO: Checking for 200 response on bullshit page" + ip_address + ":" + port + bcolors.ENDC
+    print ""
+    print bcolors.HEADER + "INFO: Checking for response on port " + port + bcolors.ENDC
     url = "https://"+ip_address+":"+port+"/xxxxxxx"
     response = requests.get(url)
+    print response
     if response.status_code == 404: #could also check == requests.codes.ok
         print bcolors.HEADER + "INFO: Response was 404 on port "+port+", perfoming directory scans" + bcolors.ENDC
         dirb_ssl_process = multiprocessing.Process(target=dirbssl, args=(ip_address,port,"https"))	
         dirb_ssl_process.start()
     else:
         print bcolors.HEADER + "INFO: Response was not 404 on port "+port+", skipping directory scans" + bcolors.ENDC
+    print ""
     return
 
 def mssqlEnum(ip_address, port):
@@ -294,20 +300,6 @@ def ftpEnum(ip_address, port):
     print results_ftp
     return
 
-def udpScan(ip_address):
-    print bcolors.HEADER + "INFO: Detected UDP on " + ip_address + bcolors.ENDC
-    UDPSCAN = "nmap -vv -Pn -A -sC -sU -T 4 --top-ports 200 -oN %s%s/port_scans/udp_%s.nmap %s"  % (dirs, ip_address, ip_address, ip_address)
-    print bcolors.HEADER + UDPSCAN + bcolors.ENDC
-    udpscan_results = subprocess.check_output(UDPSCAN, shell=True)
-    print bcolors.OKGREEN + "INFO: CHECKFILE - Finished with UDP-Nmap scan for " + ip_address + bcolors.ENDC
-    print udpscan_results
-    write_to_file(ip_address, "udpscan", udpscan_results)
-    #UNICORNSCAN = "unicornscan -mU -v -I %s > %s%s/port_scans/unicorn_udp_%s.txt" % (ip_address, dirs, ip_address, ip_address)
-    #unicornscan_results = subprocess.check_output(UNICORNSCAN, shell=True)
-    #print bcolors.OKGREEN + "INFO: RESULTS BELOW - Finished with UNICORN-UDP-scan for " + ip_address + bcolors.ENDC
-    #print unicornscan_results
-    return
-
 def nfsEnum(ip_address, port):
     print bcolors.HEADER + "INFO: Detected NFS on " + ip_address + bcolors.ENDC
     SHOWMOUNT = "showmount -e %s | tee %s%s/service_scans/nfs_%s.nmap"  % (ip_address, dirs, ip_address, ip_address)
@@ -339,7 +331,7 @@ def pop3Scan(ip_address, port):
     connect_to_port(ip_address, port, "pop3")
 
 def vulnEnum(ip_address):
-    print bcolors.OKGREEN + "INFO: Performing Vulnerability based scans for " + ip_address + bcolors.ENDC
+    print bcolors.OKGREEN + "INFO: Running Vulnerability based scans for " + ip_address + bcolors.ENDC
     VULN = "nmap -sV --script=vuln --script-timeout=600 %s -oN %s%s/port_scans/vuln_%s.nmap" % (ip_address, dirs, ip_address, ip_address)
     #VULN = "nmap -sV -p%s --script=vuln --script-timeout=300 %s -oN %s%s/port_scans/vuln_%s.nmap" % (port_list, ip_address, dirs, ip_address, ip_address)
     vuln_results = subprocess.check_output(VULN, shell=True)
@@ -348,12 +340,26 @@ def vulnEnum(ip_address):
     write_to_file(ip_address, "vulnscan", vuln_results)
     return
 
-def tcpEnum(ip_address):
-    print bcolors.OKGREEN + "INFO: Running full tcp scan on " + ip_address  + bcolors.ENDC
+def udpScan(ip_address):
+    print bcolors.OKGREEN + "INFO: Running UDP nmap scan on " + ip_address + bcolors.ENDC
+    UDPSCAN = "nmap -vv -Pn -A -sC -sU -T 4 --top-ports 200 -oN %s%s/port_scans/udp_%s.nmap %s"  % (dirs, ip_address, ip_address, ip_address)
+    #print bcolors.HEADER + UDPSCAN + bcolors.ENDC
+    udpscan_results = subprocess.check_output(UDPSCAN, shell=True)
+    print bcolors.OKGREEN + "INFO: CHECKFILE - Finished with UDP-Nmap scan for " + ip_address + bcolors.ENDC
+    print udpscan_results
+    write_to_file(ip_address, "udpscan", udpscan_results)
+    #UNICORNSCAN = "unicornscan -mU -v -I %s > %s%s/port_scans/unicorn_udp_%s.txt" % (ip_address, dirs, ip_address, ip_address)
+    #unicornscan_results = subprocess.check_output(UNICORNSCAN, shell=True)
+    #print bcolors.OKGREEN + "INFO: RESULTS BELOW - Finished with UNICORN-UDP-scan for " + ip_address + bcolors.ENDC
+    #print unicornscan_results
+    return
+
+def tcpScan(ip_address):
+    print bcolors.OKGREEN + "INFO: Running Full TCP scan on " + ip_address  + bcolors.ENDC
     #TCPALL = "unicornscan -p a %s | tee %s%s/port_scans/fulltcp_%s.nmap" % (ip_address, dirs, ip_address, ip_address)
     TCPALL = "nmap -sV -Pn -p1-65535 --max-retries 1 --max-scan-delay 10 --defeat-rst-ratelimit --open -T4 %s | tee %s%s/port_scans/fulltcp_%s.nmap" % (ip_address, dirs, ip_address, ip_address)
     tcp_results = subprocess.check_output(TCPALL, shell=True, stderr=None)
-    print bcolors.OKGREEN + "INFO: CHECK FILE - Finished with FULL_TCP-scan for " + ip_address + bcolors.ENDC
+    print bcolors.OKGREEN + "INFO: CHECK FILE - Finished with FULL-TCP-scan for " + ip_address + bcolors.ENDC
     print tcp_results
     write_to_file(ip_address, "fulltcpscan", tcp_results)
     return
@@ -382,16 +388,16 @@ def nmapScan(ip_address):
     #print open_ports
     #ports_dirty= ",".join(re.findall('\[(.*?)\]', open_ports))
     #port_list = ports_dirty.replace(' ', '')
-    m = multiprocessing.Process(target=tcpEnum, args=(scanip,))
+    m = multiprocessing.Process(target=tcpScan, args=(scanip,))
     m.start()
-    p = multiprocessing.Process(target=udpScan, args=(scanip,))
-    p.start()
+    n = multiprocessing.Process(target=udpScan, args=(scanip,))
+    n.start()
     l = multiprocessing.Process(target=vulnEnum, args=(scanip,))
     l.start()
-    print bcolors.OKGREEN + "INFO: Running general TCP/UDP nmap scans for " + ip_address + bcolors.ENDC
+    print bcolors.OKGREEN + "INFO: Running General TCP nmap scans for " + ip_address + bcolors.ENDC
     #TCPSCAN = "nmap -sV -O -p%s %s -oN %s%s/%s.nmap"  % (port_list, ip_address, dirs, ip_address, ip_address)
     TCPSCAN = "nmap -sV -O %s -oN %s%s/%s.nmap"  % (ip_address, dirs, ip_address, ip_address)
-    print bcolors.HEADER + TCPSCAN + bcolors.ENDC
+    #print bcolors.HEADER + TCPSCAN + bcolors.ENDC
     results = subprocess.check_output(TCPSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with BASIC Nmap-scan for " + ip_address + bcolors.ENDC
     print results
@@ -426,10 +432,12 @@ def nmapScan(ip_address):
             for port in ports:
                 port = port.split("/")[0]
                 multProc(httpEnum, ip_address, port)
+                time.sleep(1)
         elif (serv == "ssl/http") or ("https" == serv) or ("https?" == serv):
             for port in ports:
                 port = port.split("/")[0]
                 multProc(httpsEnum, ip_address, port)
+                time.sleep(1)
         elif "smtp" in serv:
             for port in ports:
                 port = port.split("/")[0]
@@ -514,6 +522,6 @@ if __name__=='__main__':
            
 
         p = multiprocessing.Process(target=nmapScan, args=(scanip,))
-        time.sleep(2) #Just a nice wait for unicornscan 
+        time.sleep(1) #Just a nice wait for unicornscan 
         p.start()
         
