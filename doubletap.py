@@ -120,7 +120,7 @@ def write_to_file(ip_address, enum_type, data):
         if enum_type == "fulltcpscan":
             subprocess.check_output("replace INSERTFULLTCPSCAN \"" + data + "\"  -- " + path, shell=True)
         if enum_type == "udpscan":
-            subprocess.check_output("replace INSERTUDPSCAN \"" + data + "\"  -- " + path, shell=True)
+            subprocess.check_output("replace INSERTUDPSCAN \"" + str(data) + "\"  -- " + path, shell=True)
     return
 
 #Scanning functions
