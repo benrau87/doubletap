@@ -116,11 +116,11 @@ def write_to_file(ip_address, enum_type, data):
         if enum_type == "parsero":
             subprocess.check_output("replace INSERTROBOTS \"" + data + "\"  -- " + path, shell=True)
         if enum_type == "sshscan":
-            subprocess.check_output("replace INSERTSSHBRUTE \"" + data + "\"  -- " + path, shell=True)
+            subprocess.check_output("replace INSERTSSHBRUTE \"" + str(data) + "\"  -- " + path, shell=True)
         if enum_type == "fulltcpscan":
             subprocess.check_output("replace INSERTFULLTCPSCAN \"" + data + "\"  -- " + path, shell=True)
         if enum_type == "udpscan":
-            subprocess.check_output("replace INSERTUDPSCAN \"" + str(data) + "\"  -- " + path, shell=True)
+            subprocess.check_output("replace INSERTUDPSCAN \"" + data + "\"  -- " + path, shell=True)
     return
 
 #Scanning functions
@@ -342,7 +342,7 @@ def vulnEnum(ip_address):
 
 def udpScan(ip_address):
     print bcolors.OKGREEN + "INFO: Running UDP nmap scan on " + ip_address + bcolors.ENDC
-    UDPSCAN = "nmap -vv -Pn -A -sC -sU -T 4 --top-ports 200 -oN %s%s/port_scans/udp_%s.nmap %s"  % (dirs, ip_address, ip_address, ip_address)
+    UDPSCAN = "nmap -Pn -A -sC -sU -T 4 --top-ports 200 -oN %s%s/port_scans/udp_%s.nmap %s"  % (dirs, ip_address, ip_address, ip_address)
     #print bcolors.HEADER + UDPSCAN + bcolors.ENDC
     udpscan_results = subprocess.check_output(UDPSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: CHECKFILE - Finished with UDP-Nmap scan for " + ip_address + bcolors.ENDC
