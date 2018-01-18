@@ -628,12 +628,17 @@ netstat -anlp
 
 Binary with suid permission can be run by anyone, but when they are run they are run as root! Editors like nano can then be used to open and edit the /etc/passwd file.
 
-Example programs:
+Any of these can be exploited:
 
 ```
 nmap (nmap --interactive)
 vim
 nano
+find
+bash
+more
+Less
+cp
 ```
 
 ```
@@ -693,7 +698,6 @@ cat /etc/ssh/ssh_host_key.pub
 cat /etc/ssh/ssh_host_key
 ```
 
-
 ### Bad path configuration
 
 Require user interaction
@@ -709,7 +713,6 @@ Require user interaction
 
 
 ------------------------------------------------------------------------
-
 
 ## Loot
 
