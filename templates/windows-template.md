@@ -327,9 +327,13 @@ View Source
 Step 2: 
 Start Secondary Scans
 ```
-wig-git http://INSERTIPADDRESS/path
-gobuster -u http://INSERTIPADDRESS -e -f -n -w /usr/share/wordlists/dirb/big.txt
-gobuster -u INSERTIPADDRESS -w /usr/share/wordlists/dirb/common.txt -t 100 -x .asp
+Common files and extensions
+gobuster -u http://INSERTIPADDRESS -e -n -w /usr/share/wordlists/dirb/common.txt -t 100 -x /usr/share/wordlists/dirb/extensions_common.txt
+
+Most files and extension
+gobuster -u http://INSERTIPADDRESS -e -n -w /usr/share/wordlists/dirb/big.txt -t 100 -x /usr/share/wordlists/dirb/extensions_common.txt
+
+wig-git -t 50 -q -d http://INSERTIPADDRESS/path
 ```
 # CMS checker 
 cmsmap-git -t http://INSERTIPADDRESS
