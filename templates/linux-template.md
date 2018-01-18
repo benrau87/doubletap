@@ -643,6 +643,9 @@ Here we are looking for any unmounted filesystems. If we find one we mount it an
 
 ```
 mount -l
+mkdir /media/newhd
+mount /dev/sdb1 /media/newhd
+cd /media/newhd
 ```
 
 ### Cronjob
