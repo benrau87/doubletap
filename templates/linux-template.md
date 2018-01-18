@@ -71,8 +71,7 @@ INSERTSSHCONNECT
 INSERTSSHBRUTE
 
 ```
-hydra -I -t 5 -l username -P password ssh://INSERTIPADDRESS
-nc INSERTIPADDRESS 22
+hydra -I -t 5 -l username -P passwordfile INSERTIPADDRESS -e ns
 ```
 
 ### Port 25 - SMTP
