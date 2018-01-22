@@ -46,13 +46,13 @@ List based of perceived probability of success. Note steps taken.
 6)
 ...
 ```
+## Found Users/Services/Credentials
+```
+
+```
 ## Notes
 ```
 
-
-```
-## Found Users/Services/Credentials
-```
 
 ```
 ## Exploit Steps
