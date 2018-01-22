@@ -154,6 +154,7 @@ smbclient //INSERTIPADDRESS/admin$ -U john
 Log in with shell:
 winexe -U username //INSERTIPADDRESS "cmd.exe" --system
 
+crackmap -u <user> -p <pass> --users/shares/sessions/wmi...
 ```
 
 ### Port 161/162 UDP - SNMP
