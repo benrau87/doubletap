@@ -199,6 +199,8 @@ INSERTWIGSCAN
 INSERTWIGSSLSCAN
 ```
 wig-git -t 50 -q -d http://INSERTIPADDRESS/path
+
+uniscan -f /usr/share/wordlists/dir/big.txt -bqweds -u http://INSERTIPADDRESS/path
 ```
 ### Nikto scan
 INSERTNIKTOSCAN
