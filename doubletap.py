@@ -121,6 +121,10 @@ def write_to_file(ip_address, enum_type, data):
             subprocess.check_output("replace INSERTFULLTCPSCAN \"" + data + "\"  -- " + path, shell=True)
         if enum_type == "udpscan":
             subprocess.check_output("replace INSERTUDPSCAN \"" + data + "\"  -- " + path, shell=True)
+        if enum_type == "waf":
+            subprocess.check_output("replace INSERTWAFSCAN \"" + data + "\"  -- " + path, shell=True)
+        if enum_type == "wafssl":
+            subprocess.check_output("replace INSERTWAFSSLSCAN \"" + data + "\"  -- " + path, shell=True)
     return
 
 #Scanning functions
@@ -173,6 +177,26 @@ def parsero(ip_address, port, url_start):
     write_to_file(ip_address, "parsero", results_parsero)
     return
 
+def waf(ip_address, port, url_start):
+    print bcolors.HEADER + "INFO: Starting firewall scan for " + ip_address + bcolors.ENDC
+    WAFSCAN = "wafw00f %s://%s:%s -a | tee -a %s%s/webapp_scans/waf-%s.txt" % (url_start, ip_address, port, dirs, ip_address, ip_address)
+    #WIGSCAN = "wig-git -t 20 -l %s%s/webapp_scans/http-dirb-%s.txt --no_cache_load --no_cache_save -w %s%s/webapp_scans/%s-wig-%s.txt | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'" % (dirs, ip_address, ip_address, dirs, ip_address, url_start, ip_address)
+    results_waf = subprocess.check_output(WAFSCAN, shell=True)
+    print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with WAF-scan for " + ip_address + bcolors.ENDC
+    print results_waf
+    write_to_file(ip_address, "waf", results_waf)
+    return
+
+def wafssl(ip_address, port, url_start):
+    print bcolors.HEADER + "INFO: Starting firewall scan for " + ip_address + bcolors.ENDC
+    WAFSSLSCAN = "wafw00f %s://%s:%s -a | tee -a %s%s/webapp_scans/waf-%s.txt" % (url_start, ip_address, port, dirs, ip_address, ip_address)
+    #WIGSCAN = "wig-git -t 20 -l %s%s/webapp_scans/http-dirb-%s.txt --no_cache_load --no_cache_save -w %s%s/webapp_scans/%s-wig-%s.txt | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'" % (dirs, ip_address, ip_address, dirs, ip_address, url_start, ip_address)
+    results_wafssl = subprocess.check_output(WAFSSLSCAN, shell=True)
+    print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with WAFSSL-scan for " + ip_address + bcolors.ENDC
+    print results_wafssl
+    write_to_file(ip_address, "wafssl", results_wafssl)
+    return
+
 def nikto(ip_address, port, url_start):
     print bcolors.HEADER + "INFO: Starting nikto scan for " + ip_address + bcolors.ENDC
     NIKTOSCAN = "nikto -maxtime 5m -h %s://%s:%s | tee -a %s%s/webapp_scans/nikto-%s-%s.txt" % (url_start, ip_address, port, dirs, ip_address, url_start, ip_address)
@@ -202,6 +226,8 @@ def httpEnum(ip_address, port):
     parsero_process.start()
     wig_process = multiprocessing.Process(target=wig, args=(ip_address,port,"http"))
     wig_process.start()
+    waf_process = multiprocessing.Process(target=waf, args=(ip_address,port,"http"))
+    waf_process.start()
     print bcolors.HEADER + "INFO: Checking for response on port " + port + bcolors.ENDC
     url = "http://"+ip_address+":"+port+"/xxxxxxx"
     response = requests.get(url)
@@ -227,6 +253,8 @@ def httpsEnum(ip_address, port):
     ssl_process.start()
     wig_process = multiprocessing.Process(target=wigssl, args=(ip_address,port,"https"))
     wig_process.start()
+    waf_process = multiprocessing.Process(target=wafssl, args=(ip_address,port,"https"))
+    waf_process.start()
     print ""
     print bcolors.HEADER + "INFO: Checking for response on port " + port + bcolors.ENDC
     url = "https://"+ip_address+":"+port+"/xxxxxxx"
