@@ -225,6 +225,14 @@ gobuster -u http://INSERTIPADDRESS -e -n -f -w /usr/share/wordlists/dirb/big.txt
 ### Robots
 INSERTROBOTS
 
+### Webapp Firewall
+INSERTWAFSCAN
+
+INSERTWAFSSLSCAN
+```
+wafw00f http://INSERTIPADDRESS/path -a
+```
+
 ### Default/Weak login
 Google documentation for default passwords and test them:
 ```
