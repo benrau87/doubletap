@@ -424,7 +424,7 @@ def nmapScan(ip_address):
     l.start()
     print bcolors.OKGREEN + "INFO: Running General TCP nmap scans for " + ip_address + bcolors.ENDC
     #TCPSCAN = "nmap -sV -O -p%s %s -oN %s%s/%s.nmap"  % (port_list, ip_address, dirs, ip_address, ip_address)
-    TCPSCAN = "nmap -sV -O %s -oN %s%s/%s.nmap"  % (ip_address, dirs, ip_address, ip_address)
+    TCPSCAN = "nmap -sV -Pn -O %s -oN %s%s/%s.nmap"  % (ip_address, dirs, ip_address, ip_address)
     #print bcolors.HEADER + TCPSCAN + bcolors.ENDC
     results = subprocess.check_output(TCPSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with BASIC Nmap-scan for " + ip_address + bcolors.ENDC
