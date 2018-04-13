@@ -14,9 +14,9 @@ import requests
 
 ##Change me if needed
 
-myip = ni.ifaddresses('tun0')[ni.AF_INET][0]['addr']
+myip = ni.ifaddresses('eth0')[ni.AF_INET][0]['addr']
 
-dirs = "/root/Dropbox/Engagements/Hack_the_box/"
+dirs = "/root/Desktop/"
 
 ##Stop changing shit here
 
@@ -73,8 +73,8 @@ def connect_to_port(ip_address, port, service):
 
 #Functions for writing into templates
 def write_to_file(ip_address, enum_type, data):
-    file_path_linux = "%s%s/mapping-linux.md" % (dirs, ip_address)
-    file_path_windows = "%s%s/mapping-windows.md" % (dirs, ip_address)
+    file_path_linux = "%s%s/linux-exploit-steps.md" % (dirs, ip_address)
+    file_path_windows = "%s%s/windows-exploit-steps.md" % (dirs, ip_address)
     paths = [file_path_linux, file_path_windows]
     print bcolors.OKGREEN + "INFO: Writing " + enum_type + " to template files:\n " + file_path_linux + "   \n" + file_path_windows + bcolors.ENDC
 
@@ -424,7 +424,7 @@ def nmapScan(ip_address):
     l.start()
     print bcolors.OKGREEN + "INFO: Running General TCP nmap scans for " + ip_address + bcolors.ENDC
     #TCPSCAN = "nmap -sV -O -p%s %s -oN %s%s/%s.nmap"  % (port_list, ip_address, dirs, ip_address, ip_address)
-    TCPSCAN = "nmap -sV -Pn -O %s -oN %s%s/%s.nmap"  % (ip_address, dirs, ip_address, ip_address)
+    TCPSCAN = "nmap -sV -Pn -O %s -oN %s%s/port_scans/%s.nmap"  % (ip_address, dirs, ip_address, ip_address)
     #print bcolors.HEADER + TCPSCAN + bcolors.ENDC
     results = subprocess.check_output(TCPSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with BASIC Nmap-scan for " + ip_address + bcolors.ENDC
@@ -538,14 +538,14 @@ if __name__=='__main__':
             subprocess.check_output("mkdir " + dirs + scanip + "/webapp_scans", shell=True)
             subprocess.check_output("mkdir " + dirs + scanip + "/port_scans", shell=True)
             print bcolors.OKGREEN + "INFO: Folder created here: " + dirs + scanip + bcolors.ENDC
-            subprocess.check_output("cp /opt/doubletap-git/templates/windows-template.md " + dirs + scanip + "/mapping-windows.md", shell=True)
-            subprocess.check_output("cp /opt/doubletap-git/templates/worksheet-template.md " + dirs + scanip + "/" + scanip + "-worksheet.md", shell=True)
-            subprocess.check_output("cp /opt/doubletap-git/templates/linux-template.md " + dirs + scanip + "/mapping-linux.md", shell=True)
+            subprocess.check_output("cp /opt/doubletap-git/templates/windows-template.md " + dirs + scanip + "/" + scanip + "-windows-exploit-steps.md", shell=True)
+            subprocess.check_output("cp /opt/doubletap-git/templates/worksheet-template.md " + dirs + scanip + "/" + scanip + "-notes.md", shell=True)
+            subprocess.check_output("cp /opt/doubletap-git/templates/linux-template.md " + dirs + scanip +  "/" + scanip + "-linux-exploit-steps.md", shell=True)
             print bcolors.OKGREEN + "INFO: Added pentesting templates: " +  dirs + scanip + bcolors.ENDC
-            subprocess.check_output("sed -i -e 's/INSERTIPADDRESS/" + scanip + "/g' " + dirs + scanip + "/mapping-windows.md", shell=True)
-            subprocess.check_output("sed -i -e 's/MYIPADDRESS/" + myip + "/g' " + dirs + scanip + "/mapping-windows.md", shell=True)
-            subprocess.check_output("sed -i -e 's/INSERTIPADDRESS/" + scanip + "/g' " + dirs + scanip + "/mapping-linux.md", shell=True)
-            subprocess.check_output("sed -i -e 's/MYIPADDRESS/" + myip + "/g' " + dirs + scanip + "/mapping-linux.md", shell=True)
+            subprocess.check_output("sed -i -e 's/INSERTIPADDRESS/" + scanip + "/g' " + dirs + scanip + "/" + scanip + "-windows-exploit-steps.md", shell=True)
+            subprocess.check_output("sed -i -e 's/MYIPADDRESS/" + myip + "/g' " + dirs + scanip + "/" + scanip + "-windows-exploit-steps.md", shell=True)
+            subprocess.check_output("sed -i -e 's/INSERTIPADDRESS/" + scanip + "/g' " + dirs + scanip + "/" + scanip + "-linux-exploit-steps.md", shell=True)
+            subprocess.check_output("sed -i -e 's/MYIPADDRESS/" + myip + "/g' " + dirs + scanip + "/" + scanip + "-linux-exploit-steps.md", shell=True)
            
 
         p = multiprocessing.Process(target=nmapScan, args=(scanip,))
