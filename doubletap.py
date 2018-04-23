@@ -73,8 +73,8 @@ def connect_to_port(ip_address, port, service):
 
 #Functions for writing into templates
 def write_to_file(ip_address, enum_type, data):
-    file_path_linux = "%s%s/linux-exploit-steps.md" % (dirs, ip_address)
-    file_path_windows = "%s%s/windows-exploit-steps.md" % (dirs, ip_address)
+    file_path_linux = "%s%s/%s-linux-exploit-steps.md" % (dirs, ip_address, ip_address)
+    file_path_windows = "%s%s/%s-windows-exploit-steps.md" % (dirs, ip_address, ip_address)
     paths = [file_path_linux, file_path_windows]
     print bcolors.OKGREEN + "INFO: Writing " + enum_type + " to template files:\n " + file_path_linux + "   \n" + file_path_windows + bcolors.ENDC
 
