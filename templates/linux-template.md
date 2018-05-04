@@ -66,10 +66,14 @@ smtp-user-enum -M RCPT -U /usr/share/wordlists/metasploit/unix_users.txt -t INSE
 smtp-user-enum -M EXPN -U /usr/share/wordlists/metasploit/unix_users.txt -t INSERTIPADDRESS
 smtp-user-enum -M RCPT -U /usr/share/wordlists/metasploit/unix_users.txt -t INSERTIPADDRESS
 ```
+### Port 79 Finger
+```
+pratator finger_lookup INSERTIPADDRESS
+finger @INSERTIPADDRESS
+```
 
 ### Port 110 - Pop3
-INSERTPOP3CONNECT
-
+INSERTPOP3CONNECT 
 ```
 telnet INSERTIPADDRESS 110
 USER pelle@INSERTIPADDRESS
@@ -427,6 +431,10 @@ echo "hacker ALL=(ALL:ALL) ALL" >> /etc/sudoers
 Find a writable directory:
 find / -xdev -type d \( -perm -0002 -a ! -perm -1000 \) -print
 find / -user <user>
+
+# Run as another user
+sudo - user -c 'ls'
+runuser -l user -c 'ls'
 
 # Set up webserver
 cd /root/Dropbox/Scripts/Post_Linux/Host_Scripts; python -m SimpleHTTPServer 8080
