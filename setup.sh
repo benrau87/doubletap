@@ -119,6 +119,7 @@ cat <<EOF > "${file}" \
 cd /opt/wig-git/ && python3 wig.py "\$@"
 EOF
 chmod +x "${file}"
+pip install pyrebase
 
 git clone https://github.com/vulnersCom/nmap-vulners /tmp/vulners
 cp /tmp/vulners/vulners.nse /usr/share/nmap/scripts
