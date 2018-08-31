@@ -6,6 +6,8 @@
 ```
 Only for use on Kali Linux distros
 
+This was setup for my use, as such there are some hardcoded Dropbox paths and what not in the templates. Modify as needed for your own use!
+
 To install just run the setup.sh (chmod +x setup.sh), alternatively you can run my forked version of 
 
 g0tmilk's os-script for Kali 2.0. This will set all the requirements as well -->
