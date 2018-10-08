@@ -102,6 +102,7 @@ INSERTSMBMAP
 ```
 mkdir /tmp/share
 mount -t cifs //INSERTIPADDRESS/C$ /tmp/share
+winexe --system -U 'DOMAIN\USER%PASSWORD' //TARGET_IP cmd.exe
 ```
 ### Password Policy
 INSERTSAMRDUMP
