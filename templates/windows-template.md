@@ -266,6 +266,21 @@ Google documentation for default passwords and test them:
 http://open-sez.me/
 https://cirt.net/passwords
 ```
+### Find sploits - Searchsploit and google
+
+Where there are many exploits for a software, use google. It will automatically sort it by popularity.
+
+```
+site:exploit-db.com apache 2.4.7
+
+# Remove dos-exploits
+
+searchsploit Apache 2.4.7 | grep -v '/dos/'
+searchsploit Apache | grep -v '/dos/' | grep -vi "tomcat"
+
+# Only search the title (exclude the path), add the -t
+searchsploit -t Apache | grep -v '/dos/'
+```
 
 ### Manual Checks
 
@@ -380,22 +395,6 @@ If the .asp extention is not allowed, try shell.asp.txt and use the mv command
 user: wampp
 pass: xampp 
 ```
-### Find sploits - Searchsploit and google
-
-Where there are many exploits for a software, use google. It will automatically sort it by popularity.
-
-```
-site:exploit-db.com apache 2.4.7
-
-# Remove dos-exploits
-
-searchsploit Apache 2.4.7 | grep -v '/dos/'
-searchsploit Apache | grep -v '/dos/' | grep -vi "tomcat"
-
-# Only search the title (exclude the path), add the -t
-searchsploit -t Apache | grep -v '/dos/'
-```
-
 ### Password brute force - last resort
 
 ```
