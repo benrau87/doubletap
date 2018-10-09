@@ -140,10 +140,11 @@ impacket tools
 ```
 
 ### Port 161/162 UDP - SNMP
-Look for installed programs and other ports that are opened and may have been missed
 INSERTSNMPSCAN
 
 ```
+Look for installed programs and other ports that are opened and may have been missed
+
 nmap -vv -sV -sU -Pn -p 161,162 --script=snmp-netstat,snmp-processes INSERTIPADDRESS
 onesixtyone -c /root/Dropbox/Wordlists/wordlist-common-snmp-community-strings.txt INSERTIPADDRESS
 snmp-check INSERTIPADDRESS -c public
