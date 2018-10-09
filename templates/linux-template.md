@@ -88,7 +88,8 @@ smtp-user-enum -M RCPT -U /usr/share/wordlists/metasploit/unix_users.txt -t INSE
 smtp-user-enum -M EXPN -U /usr/share/wordlists/metasploit/unix_users.txt -t INSERTIPADDRESS
 smtp-user-enum -M RCPT -U /usr/share/wordlists/metasploit/unix_users.txt -t INSERTIPADDRESS
 ```
-### Port 79 Finger
+
+### Port 79 - Finger
 ```
 pratator finger_lookup INSERTIPADDRESS
 finger @INSERTIPADDRESS
