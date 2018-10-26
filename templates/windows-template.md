@@ -122,7 +122,7 @@ INSERTSMBMAP
 ```
 Enumerating Shares
 enum4linux -a INSERTIPADDRESS
-nmap -T4 -v -oA shares --script smb-enum-shares --script-args smbuser=username,smbpass=password -p445 INSERTIPADDRESS
+nmap -T4 -v -oA shares --script smb-enum-shares --script-args smbuser=guest,smbpass=guest -p445 INSERTIPADDRESS
 
 Enumerate Users
 nmap -sU -sS --script=smb-enum-users -p U:137,T:INSERTIPADDRESS
