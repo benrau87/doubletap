@@ -68,6 +68,8 @@ INSERTFTPTEST
 ```
 nmap --script=ftp-anon,ftp-libopie,ftp-proftpd-backdoor,ftp-vsftpd-backdoor,ftp-vuln-cve2010-4221,tftp-enum -p 21 INSERTIPADDRESS
 hydra -I -e ns -l root -P /usr/share/wordlists/rockyou.txt ftp://INSERTIPADDRESS
+If anonymous is allowed, apt install ftp 
+ftp INSERTIPADDRESS
 ```
 
 ### Port 22 - SSH
