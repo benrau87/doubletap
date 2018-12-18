@@ -70,6 +70,7 @@ nmap --script=ftp-anon,ftp-libopie,ftp-proftpd-backdoor,ftp-vsftpd-backdoor,ftp-
 hydra -I -e ns -l root -P /usr/share/wordlists/rockyou.txt ftp://INSERTIPADDRESS
 If anonymous is allowed, apt install ftp 
 ftp INSERTIPADDRESS
+mput and mget to grab wild card files
 ```
 
 ### Port 22 - SSH
