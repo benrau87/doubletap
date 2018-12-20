@@ -14,7 +14,7 @@ import requests
 
 ##Change me if needed
 
-myip = ni.ifaddresses('eth0')[ni.AF_INET][0]['addr']
+myip = ni.ifaddresses('tun0')[ni.AF_INET][0]['addr']
 
 dirs = "/root/Desktop/"
 
