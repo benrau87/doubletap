@@ -52,7 +52,7 @@ List based of perceived probability of success. Note steps taken.
 4)
 5)
 6)
-...
+```
 
 ## Notes
 ```
@@ -88,8 +88,6 @@ Try for reused passwords across accounts:
 net localgroup administrators
 runas /user:<UserName> program
 ```
-
-
 ```
 
 ## Scan Outputs
