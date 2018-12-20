@@ -52,7 +52,7 @@ List based of perceived probability of success. Note steps taken.
 4)
 5)
 6)
-...
+```
 
 ## Notes
 ```
@@ -92,12 +92,11 @@ Get specific OS/patch versions and list possible exploits here
 uname -a
 searchsploit <version>
 ```
-
-
 ```
-
+  
 ## Scan Outputs
 Use linenum, or other scripts to generate report
+
 ``` 
 1) Unmonted disks (df -h or fstab entries)
 2) Bash history (check .bash_history)
