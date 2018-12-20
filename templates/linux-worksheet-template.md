@@ -98,7 +98,7 @@ searchsploit <version>
 Use linenum, or other scripts to generate report
 
 ``` 
-1) Unmonted disks (df -h or fstab entries)
+1) Unmonted disks (df -h or /etc/fstab entries)
 2) Bash history (check .bash_history)
 3) Config files with passwords
 4) Cron jobs scheduled 
