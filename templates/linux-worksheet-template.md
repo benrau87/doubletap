@@ -104,7 +104,7 @@ Use linenum, or other scripts to generate report
 4) Cron jobs scheduled 
 5) SSH keys and config (/etc/ssh or .ssh)
 6) Log files (/var/log)
-7) SUID executables
+7) SUID, GUID executables (look for interesting binaries and symlinks)
 8) Internal services (netstat, ps aux find related process version and check for exploit)
 
 https://payatu.com/guide-linux-privilege-escalation/
