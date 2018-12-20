@@ -539,8 +539,9 @@ if __name__=='__main__':
             subprocess.check_output("mkdir " + dirs + scanip + "/port_scans", shell=True)
             print bcolors.OKGREEN + "INFO: Folder created here: " + dirs + scanip + bcolors.ENDC
             subprocess.check_output("cp /opt/doubletap-git/templates/windows-template.md " + dirs + scanip + "/" + scanip + "-windows-exploit-steps.md", shell=True)
-            subprocess.check_output("cp /opt/doubletap-git/templates/worksheet-template.md " + dirs + scanip + "/" + scanip + "-notes.md", shell=True)
             subprocess.check_output("cp /opt/doubletap-git/templates/linux-template.md " + dirs + scanip +  "/" + scanip + "-linux-exploit-steps.md", shell=True)
+            subprocess.check_output("cp /opt/doubletap-git/templates/windows-worksheet-template.md " + dirs + scanip + "/" + scanip + "-windows-notes.md", shell=True)
+            subprocess.check_output("cp /opt/doubletap-git/templates/linux-worksheet-template.md " + dirs + scanip + "/" + scanip + "-linux-notes.md", shell=True)
             print bcolors.OKGREEN + "INFO: Added pentesting templates: " +  dirs + scanip + bcolors.ENDC
             subprocess.check_output("sed -i -e 's/INSERTIPADDRESS/" + scanip + "/g' " + dirs + scanip + "/" + scanip + "-windows-exploit-steps.md", shell=True)
             subprocess.check_output("sed -i -e 's/MYIPADDRESS/" + myip + "/g' " + dirs + scanip + "/" + scanip + "-windows-exploit-steps.md", shell=True)
