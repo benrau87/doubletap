@@ -167,6 +167,14 @@ private
 community
 ```
 
+### Port 389 - LDAP
+```
+Will change depending on binding mode, with anonymous binding though...
+
+nmap -p 389 --script ldap-search INSERTIPADDRESS
+nmap -p 389 --script ldap-brute INSERTIPADDRESS
+```
+
 ### Port 443 - HTTPS
 INSERTSSLSCAN
 
