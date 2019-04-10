@@ -302,7 +302,7 @@ def smbEnum(ip_address, port):
 
 def rpcEnum(ip_address, port): 
     print bcolors.HEADER + "INFO: Detected RPC on " + ip_address + ":" + port  + bcolors.ENDC
-    RPCMAP = "impacket-rpcdump %s  | tee %s%s/service_scans/rpcmap_%s" % (ip_address, dirs, ip_address, ip_address)
+    RPCMAP = "rpcdump.py %s  | tee %s%s/service_scans/rpcmap_%s" % (ip_address, dirs, ip_address, ip_address)
     rpcmap_results = subprocess.check_output(RPCMAP, shell=True)
     print bcolors.OKGREEN + "INFO: CHECK FILE - Finished with RPC-scan for " + ip_address + bcolors.ENDC
     print rpcmap_results
@@ -311,7 +311,7 @@ def rpcEnum(ip_address, port):
 
 def samrEnum(ip_address, port):
     print bcolors.HEADER + "INFO: Detected SAMR on " + ip_address + ":" + port  + bcolors.ENDC
-    SAMRDUMP = "impacket-samrdump %s | tee %s%s/service_scans/samrdump_%s" % (ip_address, dirs, ip_address, ip_address)
+    SAMRDUMP = "samrdump.py %s | tee %s%s/service_scans/samrdump_%s" % (ip_address, dirs, ip_address, ip_address)
     samrdump_results = subprocess.check_output(SAMRDUMP, shell=True)
     print bcolors.OKGREEN + "INFO: CHECK FILE - Finished with SAMR-scan for " + ip_address + bcolors.ENDC
     print samrdump_results
