@@ -92,6 +92,11 @@ smtp-user-enum -M EXPN -U /usr/share/wordlists/metasploit/unix_users.txt -t INSE
 smtp-user-enum -M RCPT -U /usr/share/wordlists/metasploit/unix_users.txt -t INSERTIPADDRESS
 ```
 
+### Port 69 - TFTP
+```
+nmap -sU -p 69 --script tftp-enum.nse --script-args tftp-enum.filelist=/usr/share/metasploit-framework/data/wordlists/tftp.txt INSERTIPADDRESS
+```
+
 ### Port 79 - Finger
 ```
 pratator finger_lookup INSERTIPADDRESS
