@@ -135,6 +135,9 @@ nmap -T4 -v -oA shares --script smb-enum-shares --script-args smbuser=guest,smbp
 Enumerate Users
 nmap -sU -sS --script=smb-enum-users -p U:137,T:INSERTIPADDRESS
 
+Null Sessions
+echo exit | smbclient -L \\\\INSERTIPADDRESS
+
 Mounting Shares to Kali
 mkdir /tmp/share
 mount -t cifs //INSERTIPADDRESS/C$ /tmp/share
