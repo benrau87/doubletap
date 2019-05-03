@@ -131,9 +131,15 @@ INSERTSMBMAP
 Enumerating Shares
 enum4linux -a INSERTIPADDRESS
 nmap -T4 -v -oA shares --script smb-enum-shares --script-args smbuser=guest,smbpass=guest -p445 INSERTIPADDRESS
+crackmapexec --share INSERTIPADDRESS
 
 Enumerate Users
 nmap -sU -sS --script=smb-enum-users -p U:137,T:INSERTIPADDRESS
+crackmapexec smb --users INSERTIPADDRESS
+crackmapexec smb --loggedon-users INSERTIPADDRESS
+
+Password Policy
+crackmapexec smb --pass-pol INSERTIPADDRESS
 
 Null Sessions
 echo exit | smbclient -L \\\\INSERTIPADDRESS
@@ -192,6 +198,11 @@ sslscan INSERTIPADDRESS:443
 
 ### Port 1030/1032/1033/1038
 Used by RPC to connect in domain network.
+
+### Port 1433 MSSQL
+```
+crackmapexec mssql
+```
 
 ### Port 1521 - Oracle
 
