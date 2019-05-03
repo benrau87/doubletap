@@ -201,7 +201,8 @@ Used by RPC to connect in domain network.
 
 ### Port 1433 MSSQL
 ```
-crackmapexec mssql
+nmap -p 445 --script ms-sql-info INSERTIPADDRESS
+crackmapexec mssql < -L to list modules>
 ```
 
 ### Port 1521 - Oracle
