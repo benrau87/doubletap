@@ -89,6 +89,14 @@ smtp-user-enum -M EXPN -U /usr/share/wordlists/metasploit/http_default_users.txt
 smtp-user-enum -M RCPT -U /usr/share/wordlists/metasploit/http_default_users.txt -t INSERTIPADDRESS
 ```
 
+### Port 53 - DNS
+```
+For Windows hosts, you can pull all DNS records with any authenticated user
+adidnsdump -u icorp\\testuser --print-zones icorp-dc.internal.corp
+Or just regular enumeration
+dnsrecon -d example.com -D /usr/share/wordlists/dnsmap.txt -t
+```
+
 ### Port 69 - TFTP
 ```
 nmap -sU -p 69 --script tftp-enum.nse --script-args tftp-enum.filelist=/usr/share/metasploit-framework/data/wordlists/tftp.txt INSERTIPADDRESS
@@ -133,20 +141,25 @@ enum4linux -a INSERTIPADDRESS
 nmap -T4 -v -oA shares --script smb-enum-shares --script-args smbuser=guest,smbpass=guest -p445 INSERTIPADDRESS
 crackmapexec --share INSERTIPADDRESS
 
-Enumerate Users
-nmap -sU -sS --script=smb-enum-users -p U:137,T:INSERTIPADDRESS
-crackmapexec smb --users INSERTIPADDRESS
-crackmapexec smb --loggedon-users INSERTIPADDRESS
-
-Password Policy
-crackmapexec smb --pass-pol INSERTIPADDRESS
-
 Null Sessions
 echo exit | smbclient -L \\\\INSERTIPADDRESS
 
 Mounting Shares to Kali
 mkdir /tmp/share
 mount -t cifs //INSERTIPADDRESS/C$ /tmp/share
+
+Enumerate Users
+nmap -sU -sS --script=smb-enum-users -p U:137,T:INSERTIPADDRESS
+crackmapexec smb --users INSERTIPADDRESS
+crackmapexec smb --loggedon-users INSERTIPADDRESS
+rpcclient -U james INSERTIPADDRESS
+  enumdomuser
+  enumalsgroups domain
+  enumalsgroups builtin
+  lookupnames <name> (for SID)
+  
+Password Policy
+crackmapexec smb --pass-pol INSERTIPADDRESS
 
 RCE
 winexe --system -U 'DOMAIN\USER%PASSWORD' //TARGET_IP cmd.exe
@@ -155,6 +168,7 @@ Windows Server GPP files
 \\<DOMAIN>\SYSVOL\<DOMAIN>\Policies\
 Look for XML files such as Drives.xml, DataSources.xml, Groups.xml, Printers.xml, ScheduledTasks.xml...
 ```
+
 ### Password Policy
 INSERTSAMRDUMP
 
