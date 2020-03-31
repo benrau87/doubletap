@@ -753,7 +753,6 @@ search -f *.sql
 ### Browser
 
 ### Mail
-
 ```
 /var/mail
 /var/spool/mail
@@ -767,5 +766,3 @@ echo $DESKTOP_SESSION
 echo $XDG_CURRENT_DESKTOP
 echo $GDMSESSION
 ```
-
-## How to replicate:
