@@ -102,6 +102,15 @@ dnsrecon -d example.com -D /usr/share/wordlists/dnsmap.txt -t
 nmap -sU -p 69 --script tftp-enum.nse --script-args tftp-enum.filelist=/usr/share/metasploit-framework/data/wordlists/tftp.txt INSERTIPADDRESS
 ```
 
+### Port 88 - Kerberos
+You will need a vaild account/credentials first.
+```
+impacket-GetUserSPNs -dc-ip <INSERTIPADDRESS> domain/username[:password] -request
+
+Take to hashcat or john
+hashcat -m 13100
+```
+
 ### Port 110 - Pop3
 INSERTPOP3CONNECT
 
