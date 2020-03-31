@@ -93,8 +93,11 @@ smtp-user-enum -M RCPT -U /usr/share/wordlists/metasploit/http_default_users.txt
 ```
 For Windows hosts, you can pull all DNS records with any authenticated user
 adidnsdump -u icorp\\testuser --print-zones icorp-dc.internal.corp
+
 Or just regular enumeration
-dnsrecon -d example.com -D /usr/share/wordlists/dnsmap.txt -t
+dnsrecon -n INSERTIPADDRESS -t brt -D /user/share/wordlists/dnsmap.txt
+Zone Transfer
+dnsrecon -n INSERTIPADDRESS -t axfr
 ```
 
 ### Port 69 - TFTP
