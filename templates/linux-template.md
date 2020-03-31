@@ -262,10 +262,10 @@ INSERTDIRBSCAN
 INSERTDIRBSSLSCAN
 ```
 # Common directories and extensions
-gobuster -u http://INSERTIPADDRESS -e -n -w /usr/share/wordlists/dirb/common.txt -t 100 -x .php,.asp,.html,.pl,.js,.py,.aspx,.htm,.xhtml
+gobuster dir --url http://INSERTIPADDRESS -e -n -w /usr/share/wordlists/dirb/common.txt -t 100 -x .php,.asp,.html,.pl,.js,.py,.aspx,.htm,.xhtml
 
 # Most directories and extension
-gobuster -u http://INSERTIPADDRESS -e -n -f -w /usr/share/wordlists/dirb/big.txt -t 100 -x .asp,.aspx,.bat,.c,.cfm,.cgi,.com,.dll,.exe,.htm,.html,.inc,.jhtml,.jsa,.jsp,.log,.mdb,.nsf,.php,.phtml,.pl,.reg,.sh,.shtml,.sql,.txt,.xml
+gobuster dir --url http://INSERTIPADDRESS -e -n -f -w /usr/share/wordlists/dirb/big.txt -t 100 -x .asp,.aspx,.bat,.c,.cfm,.cgi,.com,.dll,.exe,.htm,.html,.inc,.jhtml,.jsa,.jsp,.log,.mdb,.nsf,.php,.phtml,.pl,.reg,.sh,.shtml,.sql,.txt,.xml
 
 ```
 ### Robots
