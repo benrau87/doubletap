@@ -827,5 +827,3 @@ dir /s
 ### Databases
 
 ### SSH-keys
-
-## How to replicate:
