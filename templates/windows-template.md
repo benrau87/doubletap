@@ -106,7 +106,8 @@ nmap -sU -p 69 --script tftp-enum.nse --script-args tftp-enum.filelist=/usr/shar
 ```
 
 ### Port 88 - Kerberos
-You will need a vaild accounts first.
+INSERTKERBSCAN
+
 ```
 Find accounts with enum4linux, crackmapexec, ldapsearch, other sources..
 
@@ -215,6 +216,8 @@ community
 ```
 
 ### Port 389 - LDAP
+INSERTLDAPSCAN
+
 ```
 Will change depending on binding mode, with anonymous binding though...
 
