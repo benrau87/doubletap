@@ -144,15 +144,14 @@ retr 9
 nmap -p 143,993 --script imap-brute INSERTIPADDRESS
 ```
 
-### Port 135 - MSRPC
-INSERTRPCMAP
-
 ### Port 111 - Rpcbind
 ```
 rpcinfo -p INSERTIPADDRESS
 ```
 
-### Port 139/445 
+### Port 135/445 
+INSERTRPCMAP
+
 INSERTSMBMAP
 
 ```
