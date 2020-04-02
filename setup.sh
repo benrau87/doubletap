@@ -80,6 +80,7 @@ print_notification Installing...
 dir_check /opt/doubletap-git
 cp -r $gitdir/* /opt/doubletap-git
 chmod +x $gitdir/doubletap.py
+chmod 666 $gitdir/templates/*.md
 
 pushd /opt/doubletap-git/ >/dev/null
 #--- Add to path
@@ -88,7 +89,7 @@ file=/usr/local/bin/doubletap-git
 cat <<EOF > "${file}" \
   || echo -e ' '${RED}'[!] Issue with writing file'${RESET} 1>&2
 #!/bin/bash
-cd /opt/doubletap-git/ && python doubletap.py "\$@"
+cd /opt/doubletap-git/ && python3 doubletap.py "\$@"
 EOF
 chmod +x "${file}"
 
@@ -119,7 +120,9 @@ cat <<EOF > "${file}" \
 cd /opt/wig-git/ && python3 wig.py "\$@"
 EOF
 chmod +x "${file}"
+
 pip install pyrebase
+python3 -m pip install netifaces
 
 git clone https://github.com/vulnersCom/nmap-vulners /tmp/vulners
 cp /tmp/vulners/vulners.nse /usr/share/nmap/scripts
