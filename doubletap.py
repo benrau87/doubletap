@@ -129,7 +129,7 @@ def write_to_file(ip_address: str, enum_type: str, data: int):
 
 def dirb(ip_address, port, url_start):
     print(f"{bcolors.HEADER}INFO: Starting DIRB scan for {ip_address} : {port} {bcolors.ENDC}")
-    DIRBSCAN = f"gobuster dir -u {url_start}://{ip_address}:{port} -w /usr/share/wordlists/dirb/common.txt -P /opt/doubletap-git/wordlists/quick_hit.txt -U /opt/doubletap-git/wordlists/quick_hit.txt -t 20 | grep -o 'http.*' | sed -r 's/\x1B\[([0-9]{1, 2}(;[0-9]{1, 2})?)?[mGK]//g' | tee -a {dirs}{ip_address}/webapp_scans/dirb-{ip_address}.txt"
+    DIRBSCAN = f"gobuster dir -z -u {url_start}://{ip_address}:{port} -w /usr/share/wordlists/dirb/common.txt -P /opt/doubletap-git/wordlists/quick_hit.txt -U /opt/doubletap-git/wordlists/quick_hit.txt -t 20 | sed -r 's/\x1B\[([0-9]{1, 2}(;[0-9]{1, 2})?)?[mGK]//g' | tee -a {dirs}{ip_address}/webapp_scans/dirb-{ip_address}.txt"
     results_dirb = subprocess.getoutput(DIRBSCAN)
     print(f"{bcolors.OKGREEN}INFO: Finished with DIRB-scan for {ip_address} {bcolors.ENDC}")
     #print(results_dirb)
@@ -139,7 +139,7 @@ def dirb(ip_address, port, url_start):
 
 def dirbssl(ip_address, port, url_start):
     print(f'{bcolors.HEADER}INFO: Starting DIRBSSL scan for {ip_address} : {port} {bcolors.ENDC}')
-    DIRBSCAN = f"gobuster dir -u {url_start}://{ip_address}:{port} -e -f -n -w /usr/share/wordlists/dirb/common.txt -P /opt/doubletap-git/wordlists/quick_hit.txt -U /opt/doubletap-git/wordlists/quick_hit.txt -t 20 | grep -o 'http.*' | sed -r 's/\x1B\[([0-9]{1, 2}(;[0-9]{1, 2})?)?[mGK]//g' | tee -a {dirs}{ip_address}/webapp_scans/dirb-{ip_address}.txt"
+    DIRBSCAN = f"gobuster dir -z -u {url_start}://{ip_address}:{port} -e -f -n -w /usr/share/wordlists/dirb/common.txt -P /opt/doubletap-git/wordlists/quick_hit.txt -U /opt/doubletap-git/wordlists/quick_hit.txt -t 20 | sed -r 's/\x1B\[([0-9]{1, 2}(;[0-9]{1, 2})?)?[mGK]//g' | tee -a {dirs}{ip_address}/webapp_scans/dirb-{ip_address}.txt"
     results_dirb = subprocess.getoutput(DIRBSCAN)
     print(f"{bcolors.OKGREEN}INFO: Finished with DIRBSSL-scan for {ip_address}{bcolors.ENDC}")
     #print(results_dirb)
@@ -394,6 +394,7 @@ def sshBrute(ip_address, port):
 def pop3Scan(ip_address, port):
     print(bcolors.HEADER + "INFO: Starting POP3 scan on " + ip_address + ":" + port + bcolors.ENDC)
     connect_to_port(ip_address, port, "pop3")
+    return
 
 
 def vulnEnum(ip_address, port):
@@ -407,7 +408,7 @@ def vulnEnum(ip_address, port):
 
 
 def tcpScan(ip_address):
-    print(bcolors.OKBLUE + "INFO: Running Full TCP nmap scan on " + ip_address + bcolors.ENDC)
+    print(bcolors.OKBLUE + "INFO: Running FULL TCP nmap scan on " + ip_address + bcolors.ENDC)
     # TCPALL = "unicornscan -p a %s | tee %s%s/port_scans/fulltcp_%s.nmap" % (ip_address, dirs, ip_address, ip_address)
     TCPALL = f"nmap -sV -Pn -p1-65535 --max-retries 1 --max-scan-delay 10 --defeat-rst-ratelimit --open -T4 {ip_address} | tee {dirs}{ip_address}/port_scans/fulltcp_{ip_address}.nmap"
     tcp_results = subprocess.getoutput(TCPALL)
@@ -421,7 +422,7 @@ def udpScan(ip_address):
     print(bcolors.OKBLUE + "INFO: Running UDP nmap scan on " + ip_address + bcolors.ENDC)
     UDPSCAN = f"nmap -Pn -A -sC -sU -T 4 --top-ports 200 -oN {dirs}{ip_address}/port_scans/udp_{ip_address}.nmap {ip_address}"
     udpscan_results = subprocess.getoutput(UDPSCAN)
-    print(bcolors.OKGREEN + "INFO: Finished with UDP-Nmap scan for " + ip_address + bcolors.ENDC)
+    print(bcolors.OKGREEN + "INFO: Finished with UDP-scan for " + ip_address + bcolors.ENDC)
     #print(udpscan_results)
     write_to_file(ip_address, "udpscan", udpscan_results)
     return
@@ -510,7 +511,7 @@ def portScan(ip_address, unicornscan, resultQueue):
         #TCPSCAN = f"nmap -sV -Pn -O --top-ports 100 {ip_address} -oN {dirs}{ip_address}/port_scans/{ip_address}.nmap"
         results = subprocess.getoutput(TCPSCAN)
         #print(results)      
-        print(bcolors.OKGREEN + "INFO: Finished with BASIC Nmap-scan for " + ip_address + bcolors.ENDC)
+        print(bcolors.OKGREEN + "INFO: Finished with QUICK-TCP-scan for " + ip_address + bcolors.ENDC)
         #print(results)
         
         #    write_to_file(ip_address, "portscan", results)
