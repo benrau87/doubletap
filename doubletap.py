@@ -344,9 +344,9 @@ def ldapEnum(ip_address, port):
     print(bcolors.HEADER + "INFO: Starting LDAP based scan on " + ip_address + ":" + port + bcolors.ENDC)
     LDAPSCAN = f"nmap ---script ldap* -p {port} -oN {dirs}{ip_address}/service_scans/ldap_{ip_address}.nmap {ip_address}"
     #print(bcolors.HEADER + LDAPSCAN + bcolors.ENDC)
-    results_ldap = subprocess.getoutput(LDAPSCAN)
+    ldap_results = subprocess.getoutput(LDAPSCAN)
     print(bcolors.OKGREEN + "INFO: Finished with LDAP-scan for " + ip_address + bcolors.ENDC)
-    write_to_file(ip_address, "ldap", ftp_results)
+    write_to_file(ip_address, "ldap", ldap_results)
     #print(results_ldap)
     return
 
@@ -355,9 +355,9 @@ def kerbEnum(ip_address, port):
     print(bcolors.HEADER + "INFO: Starting KERBEROS basd scan on " + ip_address + ":" + port + bcolors.ENDC)
     KERBSCAN = f'DOM=$(nmap -p 88 --script krb5-enum-users {ip_address} | grep report | cut -d " " -f 5) && nmap -p 88 --script krb5-enum-users --script-args krb5-enum-users.realm=$DOM {ip_address} -oN {dirs}{ip_address}/service_scans/kerberos_{ip_address}.nmap {ip_address}'
     #print(bcolors.HEADER + KERBSCAN + bcolors.ENDC)
-    results_kerb = subprocess.getoutput(KERBSCAN)
+    kerb_results = subprocess.getoutput(KERBSCAN)
     print(bcolors.OKGREEN + "INFO: Finished with KERBEROS-scan for " + ip_address + bcolors.ENDC)
-    write_to_file(ip_address, "kerb", ftp_results)
+    write_to_file(ip_address, "kerb", kerb_results)
     #print(results_kerb)
     return
 
