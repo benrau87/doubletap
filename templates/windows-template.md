@@ -123,6 +123,7 @@ If you have a user, get service accounts from rpcclient enumdomusers
 impacket-GetUserSPNs -dc-ip INSERTIPADDRESS domain.local/username[:password] -request
 Note: these will be in hashcat -m 13100
 
+*If you get an account/pass rerun enumeration with it, smbmap/crackmapexec/rpcclient
 ```
 
 ### Port 110 - Pop3
