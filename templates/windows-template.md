@@ -220,8 +220,10 @@ INSERTLDAPSCAN
 
 ```
 Will change depending on binding mode, with anonymous binding though...
+https://book.hacktricks.xyz/pentesting/pentesting-ldap
 
 nmap -p 389 --script ldap-search --script-args ldap.maxobjects=-1 INSERTIPADDRESS
+nmap -n -sV --script "ldap* and not brute" --script-args ldap.maxobjects=-1 INSERTIPADDRESS
 nmap -p 389 --script ldap-brute INSERTIPADDRESS
 
 Look for pwdLastSet: Never
