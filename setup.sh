@@ -123,6 +123,7 @@ chmod +x "${file}"
 
 pip install pyrebase
 python3 -m pip install netifaces
+apt -y install gobuster
 
 git clone https://github.com/vulnersCom/nmap-vulners /tmp/vulners
 cp /tmp/vulners/vulners.nse /usr/share/nmap/scripts
