@@ -122,6 +122,13 @@ retr 9
 ### Port 143/993 - Imap
 ```
 nmap -p 143,993 --script imap-brute INSERTIPADDRESS
+
+a1 LOGIN <user> <pass>
+a LIST "" "*"
+a SELECT INBOX.Sent Items
+a4 FETCH 1 BODY[]
+
+hydra -I -e ns -l root -P /usr/share/wordlists/rockyou.txt -s 143 -f INSERTIPADDRESS imap -V
 ```
 
 ### Port 135 - MSRPC
