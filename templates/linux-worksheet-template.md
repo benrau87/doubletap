@@ -81,6 +81,7 @@ Try for reused passwords across accounts:
 cat /etc/passwd
 sudo - <user> -c 'ls'
 runuser -l <user> -c 'ls'
+su <user>
 
 ```
 
